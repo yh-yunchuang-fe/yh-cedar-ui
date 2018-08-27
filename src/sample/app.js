@@ -2,10 +2,10 @@
  * Created by zhangyi on 2017/10/23.
  */
 import React, { Component } from 'react'
-import { Switch, Route } from 'react-router-dom'
-import { withRouter } from 'react-router-dom'
-import demoRoutes from './routes.js'
+import { withRouter, Switch, Route } from 'react-router-dom'
+import routes from './routes.js'
 import './app.less'
+
 
 class Demo extends Component {
     constructor (props) {
@@ -14,7 +14,7 @@ class Demo extends Component {
 
     renderHeader () {
         let pathname = this.props.location.pathname
-        let demoName = pathname.split('/')[2] || ''
+        let demoName = pathname.split('/')[1] || ''
         if (demoName) {
             return (
                 <div className="demo-header">
@@ -39,31 +39,20 @@ class Demo extends Component {
 
 
     render() {
-        const { match } = this.props
-        console.log('match:', match)
-        console.log('demoRoutes:', demoRoutes)
-        const routeNode = (
-            <Switch>
-                {
-                    demoRoutes.map((cur, index) => {
-                        if (cur.path !== '/') {
-                            return (
-                                <Route path={`${match.path}${cur.path}`} component={cur.component} key={index}/>
-                            )
-                        } else {
-                            return (
-                                <Route exact path={`${match.path}${cur.path}`} component={cur.component} key={index}/>
-                            )
-                        }
-                    })
-                }
-            </Switch>
-        )
+        console.log('routes:', routes)
 
         return (
             <div>
                 { this.renderHeader() }
-                { routeNode }
+                <Switch>
+                    {
+                        routes.map((cur, index) => {
+                            return (
+                                <Route exact path={cur.path} component={cur.component} key={index}/>
+                            )
+                        })
+                    }
+                </Switch>
             </div>
         )
     }
