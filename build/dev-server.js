@@ -14,9 +14,8 @@ const options = {
     noInfo: false,
 }
 
-console.log('devWebpackConfig:', JSON.stringify(devWebpackConfig))
-
-// webpackDevServer.addDevServerEntrypoints(devWebpackConfig, options)
+webpackDevServer.addDevServerEntrypoints(devWebpackConfig, options)
+// devWebpackConfig.entry.app.unshift("webpack-dev-server/client?http://0.0.0.0:"+ port +"/", "webpack/hot/dev-server")
 
 const compiler = webpack(devWebpackConfig)
 const server = new webpackDevServer(compiler, options)

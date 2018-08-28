@@ -4,10 +4,11 @@
 import React, { Component } from 'react'
 import { withRouter, Switch, Route } from 'react-router-dom'
 import routes from './routes.js'
+import { hot } from 'react-hot-loader'
 import './app.less'
 
 
-class Demo extends Component {
+class App extends Component {
     constructor (props) {
         super(props)
     }
@@ -58,4 +59,4 @@ class Demo extends Component {
     }
 }
 
-export default withRouter(Demo)
+export default hot(module)(withRouter(App));//withRouter(Demo)
