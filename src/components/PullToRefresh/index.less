@@ -1,0 +1,36 @@
+@import '../../assets/css/default.less';
+
+@refreshPrefixCls: yh-pull-refresh;
+
+.@{refreshPrefixCls} {
+    position: relative;
+    overflow: auto;
+
+    &-wrap {
+        position: relative;
+    }
+
+    &-content  {
+        position: relative;
+    }
+
+    &-loading {
+        width: 100%;
+        min-height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: -100px;
+        transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);
+        transition-duration: 0ms;
+    }
+
+    &-footer {
+        text-align: center;
+        font-size: 15px;
+        color: #333;
+        height: 30px;
+        line-height: 30px;
+    }
+}

@@ -19,6 +19,7 @@ import Modal from './Modal'
 
 import Picker from './Picker'
 import Popup from './Popup'
+import PullToRefresh from './PullToRefresh'
 
 import Icon from './Icon'
 import Indicator from './Indicator'
@@ -48,6 +49,7 @@ export {
 
     Picker,
     Popup,
+    PullToRefresh,
 
     Icon,
     Indicator,

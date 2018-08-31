@@ -12,6 +12,7 @@ import SwipeAction from './SwipeAction'
 import Switch from './Switch'
 import Tag from './Tag'
 import Checkbox from './Checkbox'
+import PullToRefersh from './PullToRefresh'
 
 
 const routes = [{
@@ -49,6 +50,10 @@ const routes = [{
     path: '/Indicator',
     component: Indicator,
     name: 'Indicator'
+},{
+    path: '/PullToRefersh',
+    component: PullToRefersh,
+    name: 'PullToRefersh'
 },{
     path: '/SearchBar',
     component: SearchBar,
