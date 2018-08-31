@@ -5,6 +5,7 @@ import Badge from './Badge'
 import Dialog from './Dialog'
 import Modal from './Modal'
 import Picker from './Picker'
+import Icon from "./Icon"
 import SearchBar from './SearchBar'
 import SwipeAction from './SwipeAction'
 import Switch from './Switch'
@@ -33,6 +34,10 @@ const routes = [{
     path: '/Picker',
     component: Picker,
     name: 'Picker'
+},{
+    path: '/Icon',
+    component: Icon,
+    name: 'Icon'
 },{
     path: '/SearchBar',
     component: SearchBar,

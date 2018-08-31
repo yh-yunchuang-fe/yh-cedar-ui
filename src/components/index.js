@@ -18,6 +18,8 @@ import Modal from './Modal'
 import Picker from './Picker'
 import Popup from './Popup'
 
+import Icon from './Icon'
+
 import SearchBar from './SearchBar'
 import SwipeAction from './SwipeAction'
 import Switch from './Switch'
@@ -39,6 +41,8 @@ export {
 
     Picker,
     Popup,
+
+    Icon,
 
     SearchBar,
     SwipeAction,
