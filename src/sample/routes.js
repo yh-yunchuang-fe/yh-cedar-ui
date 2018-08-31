@@ -7,15 +7,14 @@ import Modal from './Modal'
 import Picker from './Picker'
 import Icon from "./Icon"
 import Indicator from './Indicator'
-import Tag from './Tag'
 import Checkbox from './Checkbox'
 import PullToRefersh from './PullToRefresh'
 import SearchBar from './SearchBar'
 import SwipeAction from './SwipeAction'
 import Switch from './Switch'
 import TabBar from './TabBar'
-
-
+import Tag from './Tag'
+import Toast from './Toast'
 
 const routes = [{
     path: '/',
@@ -76,6 +75,10 @@ const routes = [{
     path: '/TabBar',
     component: TabBar,
     name: 'TabBar'
+},{
+    path: '/Toast',
+    component: Toast,
+    name: 'Toast'
 }]
 
 export default routes
