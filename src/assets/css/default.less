@@ -1,27 +1,35 @@
 
 // 文字色
-@color-text-base: #333;                  // 基本
-@color-text-base-inverse: #fff;          // 基本 - 反色
+@color-text-base: #333;                  // 基本-
+@color-text-base-inverse: #fff;          // 基本 - 反色-
 @color-text-secondary: #a4a9b0;          // 辅助色
 @color-text-placeholder: #999;           // 文本框提示
-@color-text-disabled: #bbb;              // 失效
-@color-text-caption: #888;               // 辅助描述
+@color-text-disabled: #999;              // 失效-
+@color-text-caption: #888;               // 辅助描述-
 @color-text-paragraph: #333;             // 段落
-@color-link: @brand-primary;             // 链接
+@color-link: @brand-primary;               // 链接
+
+
+@color-label: #666;
+@color-disable: #999;
+@color-warning: #FF0000;
+@color-warning-tap: #EA0000;
+
 
 // 阴影色
 @color-shadow: rgba(0, 0, 0, 0.21);  // 阴影色
 
+
 // 背景色
 // ---
-@fill-base: #fff;                           // 组件默认背景
-@fill-body: #f5f5f9;                        // 页面背景
-@fill-tap: #ddd;                            // 组件默认背景 - 按下
-@fill-disabled: #ddd;                       // 通用失效背景
-@fill-mask: rgba(0, 0, 0, 0.4);              // 遮罩背景
+@fill-base: #fff;                            // 组件默认背景
+@fill-body: #f5f5f9;                         // 页面背景
+@fill-tap: #bbb;                             // 组件默认背景 - 按下
+@fill-disabled: #ddd;                        // 通用失效背景
+@fill-mask: rgba(0, 0, 0, 0.5);              // 遮罩背景
 @fill-overlay-inverse: rgba(58, 58, 58, 0.9);// 浮层背景 - 反色，用于 toast // deprecated
-@color-icon-base: #ccc;                      // 许多小图标的背景，比如一些小圆点，加减号
-
+@fil-badge: #ff0000;                   // 许多小图标的背景，比如一些小圆点，加减号
+@fil-notice: #FFF5CC;
 
 
 // 全局/品牌色
@@ -37,22 +45,30 @@
 
 // 边框色
 // ---
-@border-color-base: #eee; // #ddd;
+@border-color-base: #ddd;
+@border-color-primary: @brand-primary;
 @border-width: 1px;
 @border-width-sm: 1px;
 
+// 圆角
+// ---
+@radius: 4px;
+@radius-sm: 2px;
+
 
 // 字体尺寸
 // ---
-@font-size-base: 14px;
-
-// 字体尺寸
-// ---
+@font-size-base: 16px;
+@font-size-base-sm: 14px;
+@font-size-base-xs: 10px;
 @font-size-icontext: 10px;
-@font-size-caption-sm: 12px;
+@font-size-caption: 18px;
+@font-size-caption-sm: 14px;
+@font-size-tip: 12px;               // 错误提示等
+@font-size-alert: 15px;
 @font-size-subhead: 15px;
 @font-size-caption: 16px;
-@font-size-heading: 17px;
+@font-size-heading: 20px;
 @font-size-display-sm: 18px;
 @font-size-display-md: 21px;
 @font-size-display-lg: 24px;
@@ -66,13 +82,14 @@
 @button-h-spacing: 15px;
 
 @button-height: 40px;
-@button-font-size: 16px;
+@button-font-size: 18px;
 
-@button-height-sm: 25px;
-@button-font-size-sm: 11px;
+@button-height-sm: 30px;
+@button-font-size-sm: 16px;
 
 @primary-button-fill: @brand-primary;
 @primary-button-fill-tap: @brand-primary-tap;
+@primary-button-disabled: #ddd;
 
 @ghost-button-color: @brand-primary;    // 同时应用于背景、文字颜色、边框色
 @ghost-button-fill-tap: @brand-primary-tap;
@@ -80,15 +97,78 @@
 @link-button-fill-tap: #ddd;
 @link-button-font-size: 16px;
 
+@warning-button-fill: transparent;
+@warning-button-fill-tap: rgba(234,0,0,0.05);
+@warning-button-disabled: rgba(255, 0, 0, 0.3);
+
+@default-button-fill: transparent;
+@default-button-fill-tap: rgba(13,141,203,0.05);
+@default-button-disabled: #ddd;
+
+
+// 间距
+// ---
+// 水平间距
+@h-spacing-xs: 3px;
+@h-spacing-sm: 5px;
+@h-spacing-md: 8px;
+@h-spacing-lg: 15px;
+
+// 垂直间距
+// ---
+@v-spacing-xs: 3px;
+@v-spacing-sm: 6px;
+@v-spacing-md: 9px;
+@v-spacing-lg: 15px;
+@v-spacing-xl: 21px;
+
+// 行高lineHeight
+// ---
+@line-height-plus-md: 6px;
+
+// 指示器尺寸 Indicator TODO 大小待定
+// ---
+@indicator-sm: 14px;
+@indicator-md: 18px;
+@indicator-lg: 24px;
+@indicator-xl: 30px;
+
+// modal
+// ---
+@modal-mask-color: rgba(0px, 0px, 0px, .3);
+@modal-main-zIndex: 999px;
+@modal-main-width: 270px;
+@modal-single-btn-width: 180px;
+@modal-group-btn-width: 112px;
+
+// searchbar
+// ---
+@search-bar-fill: #fff;
+@search-bar-height: 52px;
+@search-bar-input-height: 32px;
+@search-bar-input-fill: #F2F2F2;
+@search-bar-input-color: #999;
+
+// inputNumber
+@input-number-height: 40px;
+@input-number-fill: #F9F9F9;
+@input-number-active-fill: rgba(36px, 168px, 232px, 0.05);
+
+// navbar
+@nav-bar-fill: #f9f9f9;
+@nav-bar-height: 45px;
+@nav-bar-icon-size: 20px;
+
 // Toast
 // --
 @toast-fill: @fill-overlay-inverse;
 @toast-radius: 5px;
 @toast-v-spacing: 7px;
 @toast-h-spacing: 15px;
-//rgba(0,0,0,0.6)
+@toast-z-index: 1000;
 
 @navbar-z-index: 998;
 
 @opacity-disabled: .4;
+
 
