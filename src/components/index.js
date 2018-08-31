@@ -17,11 +17,11 @@ import Modal from './Modal'
 
 import Picker from './Picker'
 import Popup from './Popup'
+import PullToRefresh from './PullToRefresh'
 
 import SearchBar from './SearchBar'
 import SwipeAction from './SwipeAction'
 import Switch from './Switch'
-
 
 export {
     alert,
@@ -39,6 +39,7 @@ export {
 
     Picker,
     Popup,
+    PullToRefresh,
 
     SearchBar,
     SwipeAction,

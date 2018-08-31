@@ -8,6 +8,7 @@ import Picker from './Picker'
 import SearchBar from './SearchBar'
 import SwipeAction from './SwipeAction'
 import Switch from './Switch'
+import PullToRefersh from './PullToRefresh'
 
 
 const routes = [{
@@ -33,6 +34,10 @@ const routes = [{
     path: '/Picker',
     component: Picker,
     name: 'Picker'
+},{
+    path: '/PullToRefersh',
+    component: PullToRefersh,
+    name: 'PullToRefersh'
 },{
     path: '/SearchBar',
     component: SearchBar,

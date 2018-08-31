@@ -43,7 +43,7 @@ class App extends Component {
         console.log('routes:', routes)
 
         return (
-            <div>
+            <div className="container">
                 { this.renderHeader() }
                 <Switch>
                     {
