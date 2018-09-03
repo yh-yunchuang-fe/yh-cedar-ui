@@ -1,10 +1,8 @@
-/**
- * Created by zhangyi on 2017/10/31.
- */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './index.less'
+import { CSSTransition } from 'react-transition-group'
 
 export default class PullToRefresh extends Component {
     static defaultProps = {
@@ -13,29 +11,48 @@ export default class PullToRefresh extends Component {
         style: null,
         height: '',
         distanceToRefresh: 100,
-        distanceLoadMore: 50,
+        distanceLoadMore: 0.5,
         onRefresh: ()=>{},
         onLoadMore: ()=>{},
         footer: null,
-        loading: false,         //状态
-        hosMore: true,
-        refershing: false,
-        refershControl: null
+        loading: false,
+        hasMore: true,
+        refreshing: false,
+        refershControl: null,
+        pullRate: 0.5
     }
 
     constructor(props) {
         super(props)
 
         this.state = {
+            propRefreshing: true,
+            refreshing: false,
             headerHeight: 30,
             beginPosY: null,
             endPosY: null
         }
     }
 
+    static getDerivedStateFromProps(props, state) {
+        if(props.refreshing != state.propRefreshing) {
+            if(!props.refreshing) {
+                return {
+                    ...state, 
+                    propRefreshing: props.refreshing, 
+                    refreshing: props.refreshing,
+                    beginPosY: null,
+                    endPosY: null
+                }
+            }
+            
+            return {...state, propRefreshing: props.refreshing, refreshing: props.refreshing}
+        } else {
+            return state
+        }
+    }
+
     componentDidMount() {
-        console.log('-----')
-        console.log(this.header.offsetHeight)
         this.setState({
             headerHeight: this.header.offsetHeight
         })
@@ -43,19 +60,25 @@ export default class PullToRefresh extends Component {
 
     onScroll = (e) => {
         let element = e.target
-        setTimeout(() => {
-            const { distanceLoadMore, onLoadMore } = this.props
-            let {
-                offsetHeight, scrollTop, scrollHeight
-            } = element
+        const { onLoadMore, loading, distanceLoadMore} = this.props
+        const {refreshing} = this.state
 
-            if (scrollTop + offsetHeight + distanceLoadMore >= scrollHeight && onLoadMore) {
-                onLoadMore()
-            }
-        }, 100)
+        if(loading || refreshing) {return}
+
+        let {
+            offsetHeight, scrollTop, scrollHeight
+        } = element
+        
+        if (scrollTop + offsetHeight + distanceLoadMore >= scrollHeight) {
+            onLoadMore && onLoadMore()
+        }
     }
 
     onMoveStart = (e) => {
+        const {refreshing} = this.state
+
+        if(refreshing || !!this.refs.container.scrollTop) {return}
+
         this.onDrag = true
         let pos = this.getEventPos(e)
 
@@ -65,17 +88,43 @@ export default class PullToRefresh extends Component {
     }
 
     onMouseMove = (e) => {
-        if(!this.onDrag) {return}
+        if(!this.onDrag || !!this.refs.container.scrollTop) {return}
+
+        const {beginPosY, headerHeight, refreshing} = this.state
+        const {onRefresh, pullRate} = this.props
+
+        if(refreshing) {return}
+
         let pos = this.getEventPos(e)
+
+        let distance = pos.y - beginPosY
+
+        if(distance <= 0) {return}
 
         this.setState({
             endPosY: pos.y
         })
+
+        if(pullRate * distance >= headerHeight) {
+            onRefresh && onRefresh()
+            this.setState({refreshing: true})
+        }
     }
 
     onMouseEnd = (e) => {
+        if(!!this.refs.container.scrollTop) {return}
+
         this.onDrag = false
-        
+        const {beginPosY, endPosY, headerHeight, refreshing} = this.state
+        const {pullRate} = this.props
+
+        let distance = endPosY - beginPosY
+
+        if(refreshing) {return}
+
+        if(distance * pullRate >= headerHeight) {
+            return
+        }
         this.setState({
             beginPosY: null,
             endPosY: null
@@ -99,40 +148,44 @@ export default class PullToRefresh extends Component {
     }
 
     getPosY() {
-        const {beginPosY, endPosY, headerHeight} = this.state
-        const {refershing} = this.props
-        console.log('---------')
-        console.log(refershing)
-        console.log(headerHeight)
-        if(refershing) {return headerHeight}
+        const {beginPosY, endPosY, headerHeight, refreshing} = this.state
+        const {pullRate} = this.props
+
+        if(refreshing) {return headerHeight}
         if(!beginPosY || !endPosY) {return 0}
 
-        let posY = endPosY - beginPosY
-
-        return posY < 0 ? 0 : posY > headerHeight ? headerHeight : posY
+        let posY = (endPosY - beginPosY) * pullRate
+        posY = posY < 0 ? 0 : posY > headerHeight ? headerHeight : posY
+        
+        return posY
     }
 
     renderLoading() {
         const {
-            refershing,
             prefixCls,
             refershControl,
         } = this.props
 
-        const {headerHeight} = this.state
+        const {headerHeight, refreshing} = this.state
 
         let posY = this.getPosY()
- console.log(posY)
+
         if(true) {
-            return <div 
-                className={`${prefixCls}-loading`} 
+            return <CSSTransition
+                in={refreshing}
+                timeout={50}
+                classNames='fade-element'
+            >
+            <div 
+                className={`${prefixCls}-loading ${!refreshing ? '' : 'transtion-out'}`} 
                 ref={(ref) => {this.header = ref}}
                 style={{
-                    top: -1 * headerHeight + posY
+                    transform: 'translateY(' + (-1 * headerHeight + posY) + 'px' + ')'
                 }}
                 >
                 {!!refershControl ? refershControl : '加载中'}
             </div>
+            </CSSTransition>
         }
     }
 
@@ -162,6 +215,8 @@ export default class PullToRefresh extends Component {
             prefixCls, className, children, style, height
         } = this.props
 
+        const {refreshing} = this.state
+
         const cls = classNames({
             [prefixCls]: true,
             [className]: className
@@ -176,6 +231,7 @@ export default class PullToRefresh extends Component {
 
         return (
             <div
+                ref="container"
                 className={cls}
                 style={sty}
                 onScroll={this.onScroll}
@@ -188,9 +244,21 @@ export default class PullToRefresh extends Component {
                 >
                 {this.renderLoading()}
                 <div className={`${prefixCls}-wrap`} ref="wrap">
-                    <div className={`${prefixCls}-content`} style={{top: posY}}>
-                        {children}
-                    </div>
+                    <CSSTransition
+                        in={refreshing}
+                        timeout={50}
+                        classNames='fade-element'
+                    >
+                        <div 
+                            className={`${prefixCls}-content`} 
+                            style={{
+                                transform: 'translateY(' + posY + 'px' +')'
+                            }}
+                        >
+                            {children}
+                        </div>
+                    </CSSTransition>
+                    
                     { this.renderFooter() }
                 </div>
             </div>
