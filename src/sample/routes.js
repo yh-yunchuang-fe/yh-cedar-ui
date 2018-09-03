@@ -9,6 +9,7 @@ import Icon from "./Icon"
 import SearchBar from './SearchBar'
 import SwipeAction from './SwipeAction'
 import Switch from './Switch'
+import Tag from './Tag'
 
 
 const routes = [{
@@ -50,6 +51,10 @@ const routes = [{
     path: '/Switch',
     component: Switch,
     name: 'Switch'
+},{
+    path: '/Tag',
+    component: Tag,
+    name: 'Tag'
 }]
 
 export default routes

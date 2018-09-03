@@ -1,0 +1,27 @@
+@import '../../assets/css/default.less';
+
+@prefixCls: yh-tag;
+
+.@{prefixCls}{
+    border-radius: @radius-sm;
+    flex-direction: row;
+    background-color: transparent;
+    overflow: hidden;
+    display: inline-block;
+    .@{prefixCls}-content{
+        border-radius: @radius-sm;
+        padding: @v-spacing-sm @h-spacing-sm;
+        border: @border-width solid @border-color-base;
+        flex-direction: row;
+        overflow: hidden;
+        justify-content: center;
+        align-items: center;
+
+        .@{prefixCls}-text{
+            font-size: 14px;
+        }
+        .textlargeSty{
+            font-size: 18px;
+        }
+    }
+}

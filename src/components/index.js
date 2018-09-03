@@ -24,6 +24,8 @@ import SearchBar from './SearchBar'
 import SwipeAction from './SwipeAction'
 import Switch from './Switch'
 
+import Tag from './Tag'
+
 
 export {
     alert,
@@ -46,5 +48,7 @@ export {
 
     SearchBar,
     SwipeAction,
-    Switch
+    Switch,
+
+    Tag
 }
