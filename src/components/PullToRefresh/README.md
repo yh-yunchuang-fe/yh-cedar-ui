@@ -14,4 +14,5 @@ loading: 加载更多的控制变量,
 hasMore: 是否有更多信息,
 refreshing: 是否在刷新,
 refershControl: 刷新的自定义组件,
-pullRate: 上拉刷新的橡皮筋硬度
+pullRate: 上拉刷新的橡皮筋硬度，
+duration: 刷新组件回去的速度

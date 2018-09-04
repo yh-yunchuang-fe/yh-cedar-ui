@@ -65,7 +65,7 @@ export default class PullToRefershDemo extends Component {
                     onRefresh={this.onRefresh.bind(this)}
                 >
             <div>
-                {data.map(item => <p key={item} style={{height: '50px'}}>{item}</p>)}
+                {data.map(item => <p key={item} style={{height: '50px', fontSize: 14}}>{item}</p>)}
             </div>
         </PullToRefresh>
     }
