@@ -8,6 +8,8 @@ import Animation from './Animation'
 import Button from './Button'
 import Badge from './Badge'
 
+import Checkbox from './Checkbox'
+
 import DatePicker from './DatePicker'
 import Dialog from './Dialog'
 
@@ -34,6 +36,8 @@ export {
 
     Button,
     Badge,
+
+    Checkbox,
 
     DatePicker,
     Dialog,

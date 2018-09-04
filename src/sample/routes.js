@@ -11,6 +11,7 @@ import SearchBar from './SearchBar'
 import SwipeAction from './SwipeAction'
 import Switch from './Switch'
 import Tag from './Tag'
+import Checkbox from './Checkbox'
 
 
 const routes = [{
@@ -24,6 +25,10 @@ const routes = [{
     path: '/Badge',
     component: Badge,
     name: 'Badge'
+},{
+    path: '/Checkbox',
+    component: Checkbox,
+    name: 'Checkbox'
 },{
     path: '/Dialog',
     component: Dialog,
