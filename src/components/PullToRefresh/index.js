@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './index.less'
-import { CSSTransition } from 'react-transition-group'
+import { CSSTransition, Transition } from 'react-transition-group'
+import Indicator from '../Indicator'
 
 export default class PullToRefresh extends Component {
     static defaultProps = {
@@ -19,22 +20,28 @@ export default class PullToRefresh extends Component {
         hasMore: true,
         refreshing: false,
         refershControl: null,
-        pullRate: 0.5
+        pullRate: 0.5,
+        duration: 800
     }
 
     constructor(props) {
         super(props)
 
         this.state = {
-            propRefreshing: true,
+            propRefreshing: false,
             refreshing: false,
             headerHeight: 30,
-            beginPosY: null,
-            endPosY: null
+            beginPosY: 0,
+            endPosY: 0,
+            pullingUp: false
         }
+
+        this.count = 0
     }
 
     static getDerivedStateFromProps(props, state) {
+        let pullingUp = state.endPosY != 0 && !state.endPosY ? true : false
+
         if(props.refreshing != state.propRefreshing) {
             if(!props.refreshing) {
                 return {
@@ -42,13 +49,14 @@ export default class PullToRefresh extends Component {
                     propRefreshing: props.refreshing, 
                     refreshing: props.refreshing,
                     beginPosY: null,
-                    endPosY: null
+                    endPosY: null,
+                    pullingUp: true
                 }
             }
             
-            return {...state, propRefreshing: props.refreshing, refreshing: props.refreshing}
+            return {...state, propRefreshing: props.refreshing, refreshing: props.refreshing, pullingUp}
         } else {
-            return state
+            return {...state, pullingUp}
         }
     }
 
@@ -70,7 +78,6 @@ export default class PullToRefresh extends Component {
         } = element
 
         if (scrollTop + offsetHeight >= scrollHeight * distanceLoadMore) {
-   
             onLoadMore && onLoadMore()
         }
     }
@@ -165,28 +172,37 @@ export default class PullToRefresh extends Component {
         const {
             prefixCls,
             refershControl,
+            duration
         } = this.props
 
-        const {headerHeight, refreshing} = this.state
+        const {headerHeight, refreshing, pullingUp} = this.state
 
         let posY = this.getPosY()
 
+        const transitionStyles = {
+            entering: { transition: `0ms cubic-bezier(0.1, 0.57, 0.1, 1)` },
+            entered:  { transition: `0ms cubic-bezier(0.1, 0.57, 0.1, 1)` },
+            exiting: { transition: `${duration}ms cubic-bezier(0.1, 0.57, 0.1, 1)` },
+            exited: { transition: `${duration}ms cubic-bezier(0.1, 0.57, 0.1, 1)` }
+        }
+
         if(true) {
-            return <CSSTransition
-                in={refreshing}
-                timeout={50}
-                classNames='fade-element'
+            return <Transition
+                in={!pullingUp}
+                timeout={0}
             >
-            <div 
-                className={`${prefixCls}-loading ${!refreshing ? '' : 'transtion-out'}`} 
-                ref={(ref) => {this.header = ref}}
-                style={{
-                    transform: 'translateY(' + (-1 * headerHeight + posY) + 'px' + ')'
-                }}
-                >
-                {!!refershControl ? refershControl : '加载中'}
-            </div>
-            </CSSTransition>
+                {state => <div 
+                    className={`${prefixCls}-loading`} 
+                    ref={(ref) => {this.header = ref}}
+                    style={{
+                        ...transitionStyles[state],
+                        transform: 'translateY(' + (-1 * headerHeight + posY) + 'px' + ')'
+                    }}
+                    >
+                    {!!refershControl ? refershControl : <Indicator text='正在加载' />}
+                </div>}
+            
+            </Transition>
         }
     }
 
@@ -213,10 +229,10 @@ export default class PullToRefresh extends Component {
 
     render() {
         const {
-            prefixCls, className, children, style, height
+            prefixCls, className, children, style, height, duration
         } = this.props
 
-        const {refreshing} = this.state
+        const {pullingUp} = this.state
 
         const cls = classNames({
             [prefixCls]: true,
@@ -226,6 +242,13 @@ export default class PullToRefresh extends Component {
         const sty = {
             ...style,
             height
+        }
+
+        const transitionStyles = {
+            entering: { transition: `0ms cubic-bezier(0.1, 0.57, 0.1, 1)` },
+            entered:  { transition: `0ms cubic-bezier(0.1, 0.57, 0.1, 1)` },
+            exiting: { transition: `${duration}ms cubic-bezier(0.1, 0.57, 0.1, 1)` },
+            exited: { transition: `${duration}ms cubic-bezier(0.1, 0.57, 0.1, 1)` }
         }
 
         let posY = this.getPosY()
@@ -245,20 +268,21 @@ export default class PullToRefresh extends Component {
                 >
                 {this.renderLoading()}
                 <div className={`${prefixCls}-wrap`} ref="wrap">
-                    <CSSTransition
-                        in={refreshing}
-                        timeout={50}
-                        classNames='fade-element'
+                    <Transition
+                        in={!pullingUp}
+                        timeout={0}
                     >
-                        <div 
+                        {state => <div 
                             className={`${prefixCls}-content`} 
                             style={{
+                                ...transitionStyles[state],
                                 transform: 'translateY(' + posY + 'px' +')'
                             }}
                         >
                             {children}
-                        </div>
-                    </CSSTransition>
+                        </div>}
+                        
+                    </Transition>
                     
                     { this.renderFooter() }
                 </div>
