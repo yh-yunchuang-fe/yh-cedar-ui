@@ -13,8 +13,6 @@ import Checkbox from './Checkbox'
 import DatePicker from './DatePicker'
 import Dialog from './Dialog'
 
-import Indicator from './Indicator'
-
 import Label from './Label'
 
 import Modal from './Modal'
@@ -44,8 +42,6 @@ export {
 
     DatePicker,
     Dialog,
-
-    Indicator,
 
     Label,
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './index.less'
-import { CSSTransition, Transition } from 'react-transition-group'
+import { Transition } from 'react-transition-group'
 import Indicator from '../Indicator'
 
 export default class PullToRefresh extends Component {

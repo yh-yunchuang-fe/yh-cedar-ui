@@ -3,7 +3,6 @@ import DemoList from './DemoList'
 import Button from './Button'
 import Badge from './Badge'
 import Dialog from './Dialog'
-import Indicator from './Indicator'
 import Modal from './Modal'
 import Picker from './Picker'
 import Icon from "./Icon"
@@ -52,10 +51,6 @@ const routes = [{
     path: '/Icon',
     component: Icon,
     name: 'Icon'
-},{
-    path: '/Indicator',
-    component: Indicator,
-    name: 'Indicator'
 },{
     path: '/PullToRefersh',
     component: PullToRefersh,

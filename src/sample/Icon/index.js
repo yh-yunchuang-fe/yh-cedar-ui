@@ -73,7 +73,7 @@ export default class IconDemo extends Component {
 
     render() {
         return (
-            <div className="container">
+            <div className="icon-container">
                 {this.renderIcons()}
             </div>
         );
