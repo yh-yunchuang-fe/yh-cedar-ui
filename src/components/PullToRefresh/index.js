@@ -10,7 +10,7 @@ export default class PullToRefresh extends Component {
         className: '',
         style: null,
         height: '',
-        distanceToRefresh: 100,
+        // distanceToRefresh: 100,
         distanceLoadMore: 0.5,
         onRefresh: ()=>{},
         onLoadMore: ()=>{},
@@ -191,13 +191,13 @@ export default class PullToRefresh extends Component {
 
     renderFooter() {
         const {
-            loading, hasMore, prefixCls
+            loading, hasMore, prefixCls, footer
         } = this.props
 
         if (!hasMore) {
             return (
                 <div className={`${prefixCls}-footer`}>
-                    <span>没有更多了</span>
+                    {!!footer ? footer : <span>没有更多了</span>}
                 </div>
             )
         }
@@ -212,7 +212,7 @@ export default class PullToRefresh extends Component {
 
     render() {
         const {
-            prefixCls, className, children, style, height
+            prefixCls, className, children, style
         } = this.props
 
         const {refreshing} = this.state
