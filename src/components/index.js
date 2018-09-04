@@ -19,6 +19,7 @@ import Picker from './Picker'
 import Popup from './Popup'
 
 import Icon from './Icon'
+import Indicator from './Indicator'
 
 import SearchBar from './SearchBar'
 import SwipeAction from './SwipeAction'
@@ -45,6 +46,7 @@ export {
     Popup,
 
     Icon,
+    Indicator,
 
     SearchBar,
     SwipeAction,

@@ -6,6 +6,7 @@ import Dialog from './Dialog'
 import Modal from './Modal'
 import Picker from './Picker'
 import Icon from "./Icon"
+import Indicator from './Indicator'
 import SearchBar from './SearchBar'
 import SwipeAction from './SwipeAction'
 import Switch from './Switch'
@@ -39,6 +40,10 @@ const routes = [{
     path: '/Icon',
     component: Icon,
     name: 'Icon'
+},{
+    path: '/Indicator',
+    component: Indicator,
+    name: 'Indicator'
 },{
     path: '/SearchBar',
     component: SearchBar,
