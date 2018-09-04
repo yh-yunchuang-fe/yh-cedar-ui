@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './index.less'
 import { CSSTransition } from 'react-transition-group'
+import Indicator from '../Indicator'
 
 export default class PullToRefresh extends Component {
     static defaultProps = {
@@ -32,6 +33,8 @@ export default class PullToRefresh extends Component {
             beginPosY: null,
             endPosY: null
         }
+
+        this.count = 0
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -70,7 +73,6 @@ export default class PullToRefresh extends Component {
         } = element
 
         if (scrollTop + offsetHeight >= scrollHeight * distanceLoadMore) {
-   
             onLoadMore && onLoadMore()
         }
     }
@@ -184,7 +186,7 @@ export default class PullToRefresh extends Component {
                     transform: 'translateY(' + (-1 * headerHeight + posY) + 'px' + ')'
                 }}
                 >
-                {!!refershControl ? refershControl : '加载中'}
+                {!!refershControl ? refershControl : <Indicator text='正在加载' />}
             </div>
             </CSSTransition>
         }

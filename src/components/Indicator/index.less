@@ -1,0 +1,22 @@
+.indicator {
+    text-align: center;
+    .indicatorLoading {
+        display: inline-block;
+        margin-bottom: 6px;
+        animation: rotateSpin infinite 1s linear;
+    }
+    .indicatorText {
+        font-size: 12px;
+        color: '#333'
+    }
+
+    @keyframes rotateSpin {
+        0% {
+            transform: rotate(0)
+        }
+
+        100% {
+            transform: rotate(360deg)
+        }
+    }
+}
