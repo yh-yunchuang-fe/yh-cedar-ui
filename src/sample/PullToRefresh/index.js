@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { PullToRefresh } from '../../components/'
+import { endianness } from 'os';
 
 export default class PullToRefershDemo extends Component {
     constructor(props) {
@@ -9,6 +10,7 @@ export default class PullToRefershDemo extends Component {
             refreshing: false,
             loading: false,
             hasMore: true,
+            page: 0,
             data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
         }
     }
@@ -18,20 +20,35 @@ export default class PullToRefershDemo extends Component {
     }
 
     onLoadMore() {
+        const {page, data} = this.state
+
+        if(page >= 1) {return}
+
         this.setState({
             loading: true
         })
+
+        setTimeout(() => {
+            alert('end loading more')
+            this.setState({
+                loading: false,
+                page: 1,
+                data: [...data, ...[15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]]
+            })
+        }, 2000)
     }
 
     onRefresh() {
-        console.log('refresh')
+        alert('begin refersh')
         this.setState({
             refreshing: true
         })
         setTimeout(() => {
             this.setState({
-                refreshing: false
+                refreshing: false,
+                data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
             })
+            alert('end refersh')
         }, 2000)
     }
 

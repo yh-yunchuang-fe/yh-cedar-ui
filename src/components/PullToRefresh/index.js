@@ -68,8 +68,9 @@ export default class PullToRefresh extends Component {
         let {
             offsetHeight, scrollTop, scrollHeight
         } = element
-        
-        if (scrollTop + offsetHeight + distanceLoadMore >= scrollHeight) {
+
+        if (scrollTop + offsetHeight >= scrollHeight * distanceLoadMore) {
+   
             onLoadMore && onLoadMore()
         }
     }
@@ -212,7 +213,7 @@ export default class PullToRefresh extends Component {
 
     render() {
         const {
-            prefixCls, className, children, style
+            prefixCls, className, children, style, height
         } = this.props
 
         const {refreshing} = this.state
