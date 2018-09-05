@@ -4,9 +4,6 @@ import { Tag } from '../../components'
 export default class TagDemo extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-
-        }
     }
 
     render() {
@@ -15,7 +12,7 @@ export default class TagDemo extends Component {
                 <div style={{flexDirection: 'row', padding: '10px 0'}}>
                     <div style={{fontSize: 20, color: '#333', margin: '10px 0'}}>不可点击:</div>
                     <Tag color="#FD7622" style={{marginRight: '10px'}} fill>Hello</Tag>
-                    <Tag color="#589C3E" fill>World</Tag>
+                    <Tag color="#589C3E" className={'class'} fill>World</Tag>
                 </div>
 
                 <div style={{flexDirection: 'row', padding: '10px 0', display: 'flex', justifyContent: 'space-between'}}>
@@ -48,7 +45,7 @@ export default class TagDemo extends Component {
                     <Tag
                         color="#666"
                         activeColor="#24A8E8"
-                        size="large"
+                        size={14}
                         readonly={false}
                     >
                         今天处理
@@ -58,7 +55,7 @@ export default class TagDemo extends Component {
                     <Tag
                         color="#666"
                         activeColor="#24A8E8"
-                        size="large"
+                        size={12}
                         readonly={false}
                         style={{
                             paddingHorizontal: 24,
@@ -70,7 +67,7 @@ export default class TagDemo extends Component {
                     <Tag
                         color="#666"
                         activeColor="#24A8E8"
-                        size="large"
+                        size={12}
                         readonly={false}
                         style={{
                             paddingHorizontal: 24,
@@ -82,7 +79,7 @@ export default class TagDemo extends Component {
                     <Tag
                         color="#666"
                         activeColor="#24A8E8"
-                        size="large"
+                        size={12}
                         readonly={false}
                         style={{
                             paddingHorizontal: 24,
