@@ -29,6 +29,7 @@ import SwipeAction from './SwipeAction'
 import Switch from './Switch'
 
 import Tag from './Tag'
+import TabBar from './TabBar'
 
 
 export {
@@ -58,5 +59,6 @@ export {
     SwipeAction,
     Switch,
 
-    Tag
+    Tag,
+    TabBar
 }

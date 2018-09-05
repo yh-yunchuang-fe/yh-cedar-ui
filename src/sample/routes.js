@@ -13,6 +13,7 @@ import PullToRefersh from './PullToRefresh'
 import SearchBar from './SearchBar'
 import SwipeAction from './SwipeAction'
 import Switch from './Switch'
+import TabBar from './TabBar'
 
 
 
@@ -71,6 +72,10 @@ const routes = [{
     path: '/Tag',
     component: Tag,
     name: 'Tag'
+},{
+    path: '/TabBar',
+    component: TabBar,
+    name: 'TabBar'
 }]
 
 export default routes
