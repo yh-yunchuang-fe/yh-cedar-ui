@@ -19,6 +19,7 @@ export default class PullToRefresh extends Component {
         loading: false,
         hasMore: true,
         refreshing: false,
+        refershText: '',
         refershControl: null,
         pullRate: 0.5,
         duration: 800
@@ -171,6 +172,7 @@ export default class PullToRefresh extends Component {
     renderLoading() {
         const {
             prefixCls,
+            refershText,
             refershControl,
             duration
         } = this.props
@@ -199,7 +201,23 @@ export default class PullToRefresh extends Component {
                         transform: 'translateY(' + (-1 * headerHeight + posY) + 'px' + ')'
                     }}
                     >
-                    {!!refershControl ? refershControl : <Indicator text='正在加载' />}
+                    {!!refershControl ? refershControl : 
+                        <Indicator 
+                            size='lg'
+                            text={refershText || '正在加载'}
+                            style={{
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: '6px 0'
+                            }}
+                            textStyle={{
+                                fontSize: 12,
+                                color: '#333',
+                                marginLeft: 0,
+                                marginTop: '6px'
+                            }} 
+                        />}
                 </div>}
             
             </Transition>
