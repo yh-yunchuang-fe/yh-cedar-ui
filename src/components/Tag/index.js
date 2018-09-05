@@ -21,7 +21,7 @@ export default class Tag extends PureComponent {
         textColor: '',
         activeColor: '#24A8E8',
         style: null,
-        size: 'default',
+        size: 16,
         selected: false,
     }
 
@@ -34,7 +34,7 @@ export default class Tag extends PureComponent {
         textColor: PropTypes.string,
         activeColor: PropTypes.string,
         style: PropTypes.object,
-        size: PropTypes.string,
+        size: PropTypes.number,
         selected: PropTypes.bool,
     }
 
@@ -65,7 +65,7 @@ export default class Tag extends PureComponent {
 
     render() {
         const {
-            prefixCls, readonly, fill, color, children, style, size, textColor, textStyle,
+            prefixCls, className, readonly, fill, color, children, style, size, textColor, textStyle,
             activeColor, ...restProps
         } = this.props;
         const selected = this.state.selected;
@@ -89,22 +89,24 @@ export default class Tag extends PureComponent {
             }
         }
 
-        let textSizeSty = `text${size}Sty`;
+        const sizeSty = {
+            fontSize: `${size}px`
+        }
 
-        const cls = classNames({
-            [`${prefixCls}-text`]: true,
-            [textSizeSty]: textSizeSty
+        const tagCls = classNames({
+            [prefixCls]: true,
+            [className]: className
         })
 
         const styles = Object.assign({}, sty, style)
-        const textStyles = Object.assign({}, textSty, textStyle)
+        const textStyles = Object.assign({}, textSty, textStyle, sizeSty)
 
         if (readonly) {
             return (
-                <div className={prefixCls}>
-                    <div className={`${prefixCls}-content`}  style={styles}>
+                <div className={tagCls}>
+                    <div className={`${prefixCls}-content`} style={styles}>
                         <div {...restProps}>
-                            <div className={cls} style={textStyles}>
+                            <div className={`${prefixCls}-text`} style={textStyles}>
                                 { children }
                             </div>
                         </div>
@@ -113,10 +115,10 @@ export default class Tag extends PureComponent {
             )
         } else {
             return (
-                <div className={prefixCls}>
-                    <div className={`${prefixCls}-content`} onClick={this.onClick}>
-                        <div style={styles} {...restProps}>
-                            <div className={cls} style={textStyles}>
+                <div className={tagCls}>
+                    <div className={`${prefixCls}-content`} style={styles} onClick={this.onClick}>
+                        <div {...restProps}>
+                            <div className={`${prefixCls}-text`} style={textStyles}>
                                 { children }
                             </div>
                         </div>
