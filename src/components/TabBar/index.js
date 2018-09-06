@@ -17,9 +17,11 @@ export default class TabBar extends Component {
 
 
     componentWillReceiveProps(nextProps){
-        this.setState({
-            activeIndex: nextProps.defaultActiveIndex
-        })
+        if(!!nextProps.defaultActiveIndex || nextProps.defaultActiveIndex == 0) {
+            this.setState({
+                activeIndex: nextProps.defaultActiveIndex
+            })
+        }
     }
 
     static defaultProps = {
