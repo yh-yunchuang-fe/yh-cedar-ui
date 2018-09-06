@@ -30,7 +30,7 @@ import Switch from './Switch'
 
 import Tag from './Tag'
 import TabBar from './TabBar'
-
+import Toast from './Toast'
 
 export {
     alert,
@@ -60,5 +60,6 @@ export {
     Switch,
 
     Tag,
-    TabBar
+    TabBar,
+    Toast,
 }
