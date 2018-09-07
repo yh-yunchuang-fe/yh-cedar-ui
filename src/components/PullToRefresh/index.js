@@ -15,6 +15,7 @@ export default class PullToRefresh extends Component {
         distanceLoadMore: 0.5,
         onRefresh: ()=>{},
         onLoadMore: ()=>{},
+        getComponentRef: ()=>{},
         footer: null,
         loading: false,
         hasMore: true,
@@ -69,10 +70,10 @@ export default class PullToRefresh extends Component {
 
     onScroll = (e) => {
         let element = e.target
-        const { onLoadMore, loading, distanceLoadMore} = this.props
+        const { onLoadMore, loading, hasMore, distanceLoadMore} = this.props
         const {refreshing} = this.state
 
-        if(loading || refreshing) {return}
+        if(loading || refreshing || !hasMore) {return}
 
         let {
             offsetHeight, scrollTop, scrollHeight
@@ -86,7 +87,7 @@ export default class PullToRefresh extends Component {
     onMoveStart = (e) => {
         const {refreshing} = this.state
 
-        if(refreshing || !!this.refs.container.scrollTop) {return}
+        if(refreshing || !!this.containerscrollTop) {return}
 
         this.onDrag = true
         let pos = this.getEventPos(e)
@@ -97,7 +98,7 @@ export default class PullToRefresh extends Component {
     }
 
     onMouseMove = (e) => {
-        if(!this.onDrag || !!this.refs.container.scrollTop) {return}
+        if(!this.onDrag || !!this.container.scrollTop) {return}
 
         const {beginPosY, headerHeight, refreshing} = this.state
         const {onRefresh, pullRate} = this.props
@@ -114,14 +115,16 @@ export default class PullToRefresh extends Component {
             endPosY: pos.y
         })
 
-        if(pullRate * distance >= headerHeight) {
-            onRefresh && onRefresh()
-            this.setState({refreshing: true})
-        }
+        // if(pullRate * distance >= headerHeight) {
+        //     setTimeout(() => {
+        //         this.setState({refreshing: true})
+        //     })
+        // }
     }
 
     onMouseEnd = (e) => {
-        if(!!this.refs.container.scrollTop) {return}
+        if(!!this.container.scrollTop) {return}
+        const {onRefresh} = this.props
 
         this.onDrag = false
         const {beginPosY, endPosY, headerHeight, refreshing} = this.state
@@ -132,6 +135,9 @@ export default class PullToRefresh extends Component {
         if(refreshing) {return}
 
         if(distance * pullRate >= headerHeight) {
+            onRefresh && onRefresh()
+            this.setState({refreshing: true})
+
             return
         }
         this.setState({
@@ -167,6 +173,14 @@ export default class PullToRefresh extends Component {
         posY = posY < 0 ? 0 : posY > headerHeight ? headerHeight : posY
         
         return posY
+    }
+
+    setContainerRef(ref) {
+        const {getComponentRef} = this.props
+
+        this.container = ref
+
+        getComponentRef && getComponentRef(ref)
     }
 
     renderLoading() {
@@ -239,7 +253,7 @@ export default class PullToRefresh extends Component {
         if (loading) {
             return (
                 <div className={`${prefixCls}-footer`}>
-                    <span>loading...</span>
+                    <span>正在加载...</span>
                 </div>
             )
         }
@@ -273,7 +287,7 @@ export default class PullToRefresh extends Component {
 
         return (
             <div
-                ref="container"
+                ref={this.setContainerRef.bind(this)}
                 className={cls}
                 style={sty}
                 onScroll={this.onScroll}
@@ -298,11 +312,12 @@ export default class PullToRefresh extends Component {
                             }}
                         >
                             {children}
+                            { this.renderFooter() }
                         </div>}
                         
                     </Transition>
                     
-                    { this.renderFooter() }
+                    
                 </div>
             </div>
         )
