@@ -6,7 +6,7 @@ export default class PullToRefershDemo extends Component {
         super(props)
 
         this.state = {
-            refreshing: false,
+            refreshing: true,
             loading: false,
             hasMore: true,
             page: 0,
@@ -15,7 +15,11 @@ export default class PullToRefershDemo extends Component {
     }
 
     componentDidMount() {
+        this.setState({refreshing: true})
 
+        setTimeout(() => {
+            this.setState({refreshing: false})
+        }, 1000)
     }
 
     onLoadMore() {

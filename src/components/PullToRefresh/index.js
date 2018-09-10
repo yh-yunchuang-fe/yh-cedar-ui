@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import './index.less'
 import { Transition } from 'react-transition-group'
 import Indicator from '../Indicator'
+import Icon from '../Icon'
 
 export default class PullToRefresh extends Component {
     static defaultProps = {
@@ -11,15 +12,18 @@ export default class PullToRefresh extends Component {
         className: '',
         style: null,
         height: '',
-        // distanceToRefresh: 100,
         distanceLoadMore: 0.5,
         onRefresh: ()=>{},
         onLoadMore: ()=>{},
+        getComponentRef: ()=>{},
         footer: null,
+        footerLoading: null,
         loading: false,
         hasMore: true,
         refreshing: false,
-        refershText: '',
+        downRefreshText: '下拉刷新',
+        refershText: '加载中',
+        upRefreshText: '释放更新',
         refershControl: null,
         pullRate: 0.5,
         duration: 800
@@ -29,21 +33,20 @@ export default class PullToRefresh extends Component {
         super(props)
 
         this.state = {
-            propRefreshing: false,
-            refreshing: false,
-            headerHeight: 30,
+            propRefreshing: false, //记录传过来的刷新值
+            refreshing: false, //是否在刷新
+            headerHeight: 59, //组件头部loading高度, 超过这个高度并且释放手指才会触发刷新
             beginPosY: 0,
             endPosY: 0,
-            pullingUp: false
+            distance: 0,
+            pullingUp: false //判断是否是手指释放后上拉
         }
-
-        this.count = 0
     }
 
     static getDerivedStateFromProps(props, state) {
         let pullingUp = state.endPosY != 0 && !state.endPosY ? true : false
 
-        if(props.refreshing != state.propRefreshing) {
+        if(props.refreshing != state.propRefreshing) { //外部组件主动出发刷新状态变更
             if(!props.refreshing) {
                 return {
                     ...state, 
@@ -51,28 +54,32 @@ export default class PullToRefresh extends Component {
                     refreshing: props.refreshing,
                     beginPosY: null,
                     endPosY: null,
+                    distance: 0,
                     pullingUp: true
                 }
             }
-            
-            return {...state, propRefreshing: props.refreshing, refreshing: props.refreshing, pullingUp}
+            return {...state, distance: state.headerHeight, propRefreshing: props.refreshing, refreshing: props.refreshing, pullingUp}
         } else {
             return {...state, pullingUp}
         }
     }
 
     componentDidMount() {
+        const {refreshing} = this.props
+
         this.setState({
-            headerHeight: this.header.offsetHeight
+            headerHeight: this.header.offsetHeight, //拿到实际的loading高度
+            distance: refreshing ? this.header.offsetHeight : 0
         })
     }
 
     onScroll = (e) => {
         let element = e.target
-        const { onLoadMore, loading, distanceLoadMore} = this.props
+        const { onLoadMore, loading, hasMore, distanceLoadMore} = this.props
         const {refreshing} = this.state
 
-        if(loading || refreshing) {return}
+        //在刷新、加载更多、外部明确告知无更多消息时，不触发onloadmore
+        if(loading || refreshing || !hasMore) {return}
 
         let {
             offsetHeight, scrollTop, scrollHeight
@@ -84,9 +91,9 @@ export default class PullToRefresh extends Component {
     }
 
     onMoveStart = (e) => {
-        const {refreshing} = this.state
+        const {refreshing, distance} = this.state
 
-        if(refreshing || !!this.refs.container.scrollTop) {return}
+        if(refreshing || !!this.container.scrollTop) {return}
 
         this.onDrag = true
         let pos = this.getEventPos(e)
@@ -97,10 +104,11 @@ export default class PullToRefresh extends Component {
     }
 
     onMouseMove = (e) => {
-        if(!this.onDrag || !!this.refs.container.scrollTop) {return}
+        //不在首页，不触发
+        if(!this.onDrag || !!this.container.scrollTop) {return}
 
-        const {beginPosY, headerHeight, refreshing} = this.state
-        const {onRefresh, pullRate} = this.props
+        const {beginPosY, refreshing} = this.state
+        const {pullRate} = this.props
 
         if(refreshing) {return}
 
@@ -111,33 +119,40 @@ export default class PullToRefresh extends Component {
         if(distance <= 0) {return}
 
         this.setState({
-            endPosY: pos.y
+            endPosY: pos.y,
+            distance: distance * pullRate
         })
-
-        if(pullRate * distance >= headerHeight) {
-            onRefresh && onRefresh()
-            this.setState({refreshing: true})
-        }
     }
 
     onMouseEnd = (e) => {
-        if(!!this.refs.container.scrollTop) {return}
+        if(!!this.container.scrollTop) {return}
+        const {onRefresh} = this.props
 
         this.onDrag = false
         const {beginPosY, endPosY, headerHeight, refreshing} = this.state
         const {pullRate} = this.props
 
-        let distance = endPosY - beginPosY
+        let distance = endPosY - beginPosY 
 
         if(refreshing) {return}
 
         if(distance * pullRate >= headerHeight) {
+            onRefresh && onRefresh()
+            this.setState({
+                beginPosY: null, //设置null是为了区分用户释放手指与其他状态
+                endPosY: null,
+                distance: headerHeight,
+                refreshing: true
+            })
+
             return
+        } else {
+            this.setState({
+                beginPosY: null,
+                endPosY: null,
+                distance: 0
+            })
         }
-        this.setState({
-            beginPosY: null,
-            endPosY: null
-        })
     }
 
     getEventPos(e) {
@@ -156,17 +171,25 @@ export default class PullToRefresh extends Component {
         return pos
     }
 
-    getPosY() {
+    getRefreshText() {
         const {beginPosY, endPosY, headerHeight, refreshing} = this.state
-        const {pullRate} = this.props
+        const {pullRate, refershText, downRefreshText, upRefreshText} = this.props
 
-        if(refreshing) {return headerHeight}
-        if(!beginPosY || !endPosY) {return 0}
+        if(refreshing) {return refershText}
 
         let posY = (endPosY - beginPosY) * pullRate
-        posY = posY < 0 ? 0 : posY > headerHeight ? headerHeight : posY
-        
-        return posY
+
+        if(posY >= headerHeight) {return upRefreshText}
+
+        return downRefreshText
+    }
+
+    setContainerRef(ref) {
+        const {getComponentRef} = this.props
+
+        this.container = ref
+
+        getComponentRef && getComponentRef(ref)
     }
 
     renderLoading() {
@@ -177,9 +200,7 @@ export default class PullToRefresh extends Component {
             duration
         } = this.props
 
-        const {headerHeight, refreshing, pullingUp} = this.state
-
-        let posY = this.getPosY()
+        const {headerHeight, distance, refreshing, pullingUp} = this.state
 
         const transitionStyles = {
             entering: { transition: `0ms cubic-bezier(0.1, 0.57, 0.1, 1)` },
@@ -198,13 +219,13 @@ export default class PullToRefresh extends Component {
                     ref={(ref) => {this.header = ref}}
                     style={{
                         ...transitionStyles[state],
-                        transform: 'translateY(' + (-1 * headerHeight + posY) + 'px' + ')'
+                        transform: 'translateY(' + (distance - headerHeight) + 'px' + ')'
                     }}
                     >
                     {!!refershControl ? refershControl : 
                         <Indicator 
                             size='lg'
-                            text={refershText || '正在加载'}
+                            text={this.getRefreshText()}
                             style={{
                                 flexDirection: 'column',
                                 justifyContent: 'center',
@@ -226,7 +247,7 @@ export default class PullToRefresh extends Component {
 
     renderFooter() {
         const {
-            loading, hasMore, prefixCls, footer
+            loading, hasMore, prefixCls, footer, footerLoading
         } = this.props
 
         if (!hasMore) {
@@ -239,7 +260,7 @@ export default class PullToRefresh extends Component {
         if (loading) {
             return (
                 <div className={`${prefixCls}-footer`}>
-                    <span>loading...</span>
+                    {!!footerLoading ? footerLoading : <span>正在加载...</span>}
                 </div>
             )
         }
@@ -250,7 +271,7 @@ export default class PullToRefresh extends Component {
             prefixCls, className, children, style, height, duration
         } = this.props
 
-        const {pullingUp} = this.state
+        const {distance, pullingUp} = this.state
 
         const cls = classNames({
             [prefixCls]: true,
@@ -269,11 +290,9 @@ export default class PullToRefresh extends Component {
             exited: { transition: `${duration}ms cubic-bezier(0.1, 0.57, 0.1, 1)` }
         }
 
-        let posY = this.getPosY()
-
         return (
             <div
-                ref="container"
+                ref={this.setContainerRef.bind(this)}
                 className={cls}
                 style={sty}
                 onScroll={this.onScroll}
@@ -294,15 +313,14 @@ export default class PullToRefresh extends Component {
                             className={`${prefixCls}-content`} 
                             style={{
                                 ...transitionStyles[state],
-                                transform: 'translateY(' + posY + 'px' +')'
+                                transform: 'translateY(' + distance + 'px' +')'
                             }}
                         >
                             {children}
+                            { this.renderFooter() }
                         </div>}
                         
                     </Transition>
-                    
-                    { this.renderFooter() }
                 </div>
             </div>
         )
