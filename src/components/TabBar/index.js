@@ -104,7 +104,7 @@ export default class TabBar extends Component {
 
         const wrapCls = classNames({
             [prefixCls]: true,
-            [classNames]: className,
+            [className]: className,
             [`${prefixCls}-top`]: tabBarPosition === 'top',
             [`${prefixCls}-bottom`]: tabBarPosition === 'bottom',
             [`${prefixCls}-line`]: underline
