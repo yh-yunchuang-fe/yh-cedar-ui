@@ -39,7 +39,9 @@ export default class PullToRefresh extends Component {
             beginPosY: 0,
             endPosY: 0,
             distance: 0,
-            pullingUp: false //判断是否是手指释放后上拉
+            pullingUp: false, //判断是否是手指释放后上拉
+            propsLoading: false,
+            isLoading: false
         }
     }
 
@@ -60,8 +62,17 @@ export default class PullToRefresh extends Component {
             }
             return {...state, distance: state.headerHeight, propRefreshing: props.refreshing, refreshing: props.refreshing, pullingUp}
         } else {
+            if(props.loading != state.propsLoading) {
+                return {
+                    ...state,
+                    propsLoading: props.loading,
+                    isLoading: props.loading
+                }
+            }
             return {...state, pullingUp}
         }
+
+        
     }
 
     componentDidMount() {
@@ -74,19 +85,23 @@ export default class PullToRefresh extends Component {
     }
 
     onScroll = (e) => {
+        
         let element = e.target
         const { onLoadMore, loading, hasMore, distanceLoadMore} = this.props
-        const {refreshing} = this.state
+        const {refreshing, isLoading} = this.state
 
         //在刷新、加载更多、外部明确告知无更多消息时，不触发onloadmore
-        if(loading || refreshing || !hasMore) {return}
+        if(isLoading || loading || refreshing || !hasMore) {return}
 
         let {
             offsetHeight, scrollTop, scrollHeight
         } = element
 
-        if (scrollTop + offsetHeight >= scrollHeight * distanceLoadMore) {
+        if (scrollTop >= (scrollHeight - offsetHeight) * distanceLoadMore) {
+            this.setState({isLoading: true})
+
             onLoadMore && onLoadMore()
+            
         }
     }
 
