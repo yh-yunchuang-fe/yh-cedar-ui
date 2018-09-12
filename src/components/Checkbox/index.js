@@ -80,12 +80,14 @@ export default class Checkbox extends Component {
         if (typeof icon === 'boolean' && icon) {
             const defaultIcon = (checked) => {
                 let icon = checked ? 'checked' : 'radio-off';
+                let color = '#24A8E8'
                 if(disabled) {
-                    icon = 'checked'
+                    icon = 'radio-off'
+                    color = '#ececec'
                 }
                 return (
                     <div className="icon">
-                        <Icon name={icon} color='#24A8E8' />
+                        <Icon name={icon} color={color} />
                     </div>
                 );
             };
