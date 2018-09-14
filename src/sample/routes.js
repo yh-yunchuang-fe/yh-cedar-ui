@@ -7,6 +7,7 @@ import Modal from './Modal'
 import Picker from './Picker'
 import Icon from "./Icon"
 import Indicator from './Indicator'
+import InputNumber from './InputNumber'
 import Checkbox from './Checkbox'
 import PullToRefersh from './PullToRefresh'
 import SearchBar from './SearchBar'
@@ -79,6 +80,10 @@ const routes = [{
     path: '/Toast',
     component: Toast,
     name: 'Toast'
+}, {
+    path: '/InputNumber',
+    component: InputNumber,
+    name: 'InputNumber'
 }]
 
 export default routes
