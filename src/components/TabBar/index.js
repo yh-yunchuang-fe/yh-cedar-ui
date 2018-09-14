@@ -17,9 +17,11 @@ export default class TabBar extends Component {
 
 
     componentWillReceiveProps(nextProps){
-        this.setState({
-            activeIndex: nextProps.defaultActiveIndex
-        })
+        if(!!nextProps.defaultActiveIndex || nextProps.defaultActiveIndex == 0) {
+            this.setState({
+                activeIndex: nextProps.defaultActiveIndex
+            })
+        }
     }
 
     static defaultProps = {
@@ -51,7 +53,7 @@ export default class TabBar extends Component {
     }
 
 
-    onTabClick = (activeIndex) => {
+    onTabClick = (activeIndex, item) => {
         if (activeIndex === this.state.activeIndex) {
             return;
         }
@@ -60,7 +62,7 @@ export default class TabBar extends Component {
             activeIndex
         })
         if (this.props.onChange) {
-            this.props.onChange(activeIndex)
+            this.props.onChange(activeIndex, item)
         }
     }
 
@@ -83,7 +85,7 @@ export default class TabBar extends Component {
                     className={cls}
                     style={{color}}
                     key={index}
-                    onClick={this.onTabClick.bind(this, index)}>
+                    onClick={this.onTabClick.bind(this, index, item)}>
                     <span>{item}</span>
                 </div>
             )
