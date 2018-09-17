@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import { InputNumber } from '../../components';
 
-export default class InputNumber extends Component {
+export default class InputNumberDemo extends Component {
     render() {
-        return <div>inputnumber</div>
+        return <div>
+            <InputNumber />
+        </div>
     }
 }
