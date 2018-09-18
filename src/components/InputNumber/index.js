@@ -8,13 +8,15 @@ export default class InputNumber extends Component {
         super(props)
 
         this.state = {
-            num: this.accurateNum(this.props.value || this.props.defaultValue)
+            inputValue: props.value || props.defaultValue
         }
     }
 
     static defaultProps = {
         prefixCls: 'yh-inputnumber',
         className: '',
+        autoFocus: false,
+        disabled: false,
         minusIcon: null,
         plusIcon: null,
         defaultValue: 0,
@@ -22,82 +24,199 @@ export default class InputNumber extends Component {
         min: -Infinity,
         max: Infinity,
         step: 1,
-        precision: 0,
-        onChange: () => {}
+        precision: null,
+        onChange: null,
+        formatter: null,
+        parse: null,
+        getInputRef: null
     }
 
-    static PropTypes = {
+    static propTypes = {
         prefixCls: PropTypes.string,
         className: PropTypes.string,
+        autoFocus: PropTypes.bool,
+        disabled: PropTypes.bool,
         minusIcon: PropTypes.any,
         plusIcon: PropTypes.any,
         defaultValue: PropTypes.number,
         value: PropTypes.number,
+        min: PropTypes.number,
+        max: PropTypes.number,
         step: PropTypes.number,
-        onChange: PropTypes.func
+        precision: PropTypes.number,
+        onChange: PropTypes.func,
+        formatter: PropTypes.func,
+        parse: PropTypes.func,
+        getInputRef: PropTypes.func
+    }
+
+    componentDidMount() {
+        const {value, defaultValue, formatter} = this.props
+        let newValue
+
+        if(value !== null) {
+            newValue = this.accurateNum(value)
+        } else {
+            newValue = this.accurateNum(defaultValue)
+        }
+
+        if(isFunction(formatter)) {
+            newValue = formatter(newValue)
+        }
+
+        this.input.value = newValue
     }
 
     accurateNum(value) {
         let {precision} = this.props
 
+        if(!precision) {return Number(value)}
+
         precision = Math.max(precision, 0)
 
-        return value.toFixed(precision)
+        return Number(value).toFixed(precision)
     }
 
     onReduce() {
-        const {num} = this.state
-        const {step, min, onChange} = this.props
+        const {step, min, disabled, parse} = this.props
+        const {inputValue} = this.state
 
-        let newNum = num - step
+        if(disabled || inputValue <= min) {return}
 
-        if(newNum < min) {
-            return
+        let currentVal
+
+        if(isFunction(parse)) {
+            currentVal = Number(parse(this.input.value))
+        } else {
+            currentVal = Number(this.input.value)
         }
-        this.setState({num: this.accurateNum(newNum)})
 
-        onChange && onChange(newNum)
+        let newValue = currentVal - step
+        newValue = Math.max(min, newValue)
+
+        this.onChange(newValue)
     }
 
     onAdd() {
-        const {num} = this.state
-        const {step, max, onChange} = this.props
+        const {step, max, disabled, parse} = this.props
+        const {inputValue} = this.state
 
-        let newNum = num + step
+        if(disabled || inputValue >= max) {return}
 
-        if(newNum > max) {
-            return
+        let currentVal
+
+        if(isFunction(parse)) {
+            currentVal = Number(parse(this.input.value))
+        } else {
+            currentVal = Number(this.input.value)
         }
-        this.setState({num: this.accurateNum(newNum)})
+        let newValue = currentVal + step
+        newValue = Math.min(newValue, max)
 
-        onChange && onChange(newNum)
+        this.onChange(newValue)
     }
 
-    onInputChange(val) {
+    onInputChange(e) {
+        let currentVal = e.target.value
 
+        const {parse, formatter} = this.props
+
+        if(isFunction(parse)) {
+            currentVal = parse(currentVal)
+        }
+
+        if(isFunction(formatter)) {
+            this.input.value = formatter(currentVal)
+        }
     }
 
-    onChange() {
+    onInputBlur(e) {
+        let currentVal = e.target.value
 
+        const {min, max, parse} = this.props
+        const {inputValue} = this.state
+
+        if(isFunction(parse)) {
+            currentVal = parse(currentVal)
+        }
+
+        let reg = /^\-*(?:\d+|\d+\.\d+)$/
+        let result = reg.test(currentVal)
+        let newValue = !result ? inputValue : currentVal
+        newValue = Math.min(max, Math.max(min, newValue))
+
+        this.onChange(newValue)
+    }
+
+    onChange(newValue) {
+        const {onChange, formatter ,value} = this.props
+        let accurateValue = this.accurateNum(newValue)
+
+        if(value === null) {
+            if(isFunction(formatter)) {
+                this.input.value = formatter(accurateValue)
+            } else {
+                this.input.value = accurateValue
+            }    
+        }
+        
+        this.setState({inputValue: accurateValue})
+        onChange && onChange(accurateValue)
+    }
+
+    componentDidUpdate() {
+        const {value} = this.props
+
+        if(value !== null) {
+            this.input.value = value
+        }
+    }
+
+    getInputRef(ref) {
+        const {getInpuRef} = this.props
+
+        this.input = ref
+
+        getInpuRef && getInpuRef(ref)
     }
 
     render() {
-        const {prefixCls, className, minusIcon, plusIcon} = this.props
-        const {num} = this.state
+        const {inputValue} = this.state
+        const {prefixCls, className, minusIcon, plusIcon, autoFocus, disabled, max, min} = this.props
 
         const cls = classNames({
             [prefixCls]: true,
-            [className]: className
+            [className]: className,
+            disabled: disabled
         })
 
         return <div className={cls}>
-            <a className={`${prefixCls}-btn`} onClick={this.onReduce.bind(this)} >
+            <a 
+                ref={(ref) => {this.reduceBtn = ref}}
+                className={`${prefixCls}-btn ${inputValue <= min ? 'disabled' : ''}`} 
+                onClick={this.onReduce.bind(this)} 
+            >
                 {minusIcon ? minusIcon : <Icon name="minus" />}
             </a>
-            <input className={`${prefixCls}-input`} value={num} onChange={this.onInputChange.bind(this)} />
-            <a className={`${prefixCls}-btn`} onClick={this.onAdd.bind(this)} >
+            <input 
+                autoFocus={autoFocus}
+                disabled={disabled}
+                className={`${prefixCls}-input`} 
+                ref={this.getInputRef.bind(this)}
+                onBlur={this.onInputBlur.bind(this)}
+                onChange={this.onInputChange.bind(this)}
+            />
+            <a 
+                className={`${prefixCls}-btn ${inputValue >= max ? 'disabled' : ''}`} 
+                onClick={this.onAdd.bind(this)} 
+                ref={(ref) => this.addBtn = ref}
+            >
                 {plusIcon ? plusIcon : <Icon name="plus" />}
             </a>
         </div>
     }
+}
+
+function isFunction(param) {
+    return Object.prototype.toString.apply(param) === '[object Function]'
 }

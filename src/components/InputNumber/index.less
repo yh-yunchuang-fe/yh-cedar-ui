@@ -2,7 +2,6 @@
 
 .@{prefixCls} {
     display: inline-flex;
-    flex: 1;
     box-sizing: border-box;
     height: 27px;
     border: solid 1px #b5b5b5;
@@ -15,6 +14,12 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        &.disabled {
+            cursor: not-allowed;
+            i {
+                color: #d5d5d5 !important;
+            }
+        }
     }
     &-input {
         width: 50px;
@@ -24,5 +29,16 @@
         border-right: solid 1px #b5b5b5;
         padding: 0 10px;
         font-size: 12px;
+    }
+    &.disabled {
+        .@{prefixCls}-btn {
+            cursor: not-allowed;
+            i {
+                color: #d5d5d5 !important;
+            }
+        }
+        .@{prefixCls}-input {
+            color: #d5d5d5;
+        }
     }
 }
