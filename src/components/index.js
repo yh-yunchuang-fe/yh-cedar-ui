@@ -23,6 +23,7 @@ import PullToRefresh from './PullToRefresh'
 
 import Icon from './Icon'
 import Indicator from './Indicator'
+import InputNumber from './InputNumber'
 
 import SearchBar from './SearchBar'
 import SwipeAction from './SwipeAction'
@@ -54,6 +55,7 @@ export {
 
     Icon,
     Indicator,
+    InputNumber,
 
     SearchBar,
     SwipeAction,

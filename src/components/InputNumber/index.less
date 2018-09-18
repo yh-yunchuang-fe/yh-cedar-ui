@@ -1,0 +1,44 @@
+@prefixCls: yh-inputnumber;
+
+.@{prefixCls} {
+    display: inline-flex;
+    box-sizing: border-box;
+    height: 27px;
+    border: solid 1px #b5b5b5;
+    border-radius: 4px;
+
+    &-btn {
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        &.disabled {
+            cursor: not-allowed;
+            i {
+                color: #d5d5d5 !important;
+            }
+        }
+    }
+    &-input {
+        width: 50px;
+        background: transparent;
+        border: none;
+        border-left: solid 1px #b5b5b5;
+        border-right: solid 1px #b5b5b5;
+        padding: 0 10px;
+        font-size: 12px;
+    }
+    &.disabled {
+        .@{prefixCls}-btn {
+            cursor: not-allowed;
+            i {
+                color: #d5d5d5 !important;
+            }
+        }
+        .@{prefixCls}-input {
+            color: #d5d5d5;
+        }
+    }
+}
