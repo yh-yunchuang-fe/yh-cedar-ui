@@ -2,7 +2,7 @@
  * Created by zhangyi on 2017/11/2.
  */
 import React, { Component } from 'react'
-import _ from 'lodash'
+import { isObject } from "../../utils";
 import './index.less'
 
 
@@ -79,7 +79,7 @@ export default class PickerColumn extends Component {
         // 找到默认选中项
         let selectedIndex = -1
         options.some((cur, index) => {
-            let curValue = _.isObject(cur) ? cur.value : cur
+            let curValue = isObject(cur) ? cur.value : cur
             if (curValue === value) {
                 selectedIndex = index
                 return true
@@ -185,7 +185,7 @@ export default class PickerColumn extends Component {
 
     onSelected = (option) => {
         if (this.props.onChange) {
-            let value = _.isObject(option) ? option.value : option
+            let value = isObject(option) ? option.value : option
             this.props.onChange(value)
         }
     }
@@ -197,7 +197,7 @@ export default class PickerColumn extends Component {
         return options.map((option, index) => {
             let curValue = ''
             let label = ''
-            if (_.isObject(option)) {
+            if (isObject(option)) {
                 curValue = option.value
                 label = option.label
             } else {

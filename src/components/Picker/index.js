@@ -4,7 +4,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import _ from 'lodash'
 import PickerColumn from './PickerColumn'
 import Dialog from '../Dialog'
 import './index.less'
@@ -94,7 +93,7 @@ export default class Picker extends Component {
 
         value = value || []
         let colNodes = null
-        if (!_.isArray(options[0])) {
+        if (!Array.isArray(options[0])) {
             colNodes = (
                 <PickerColumn
                     prefixCls={prefixCls}
