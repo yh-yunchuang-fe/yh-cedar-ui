@@ -2,66 +2,21 @@
  * @author zhangyi
  * @date 2018/8/23
  */
-import alert from './Alert'
-import Animation from './Animation'
 
-import Button from './Button'
-import Badge from './Badge'
+export { default as alert } from './Alert'
+export { default as Animation } from './Animation'
 
-import Checkbox from './Checkbox'
+export { default as Button } from './Button'
 
-import DatePicker from './DatePicker'
-import Dialog from './Dialog'
+export { default as Badge } from './Badge'
 
-import Label from './Label'
+export { default as Checkbox } from './Checkbox'
 
-import Modal from './Modal'
+export { default as  DatePicker } from './DatePicker'
+export { default as Dialog } from './Dialog'
 
-import Picker from './Picker'
-import Popup from './Popup'
-import PullToRefresh from './PullToRefresh'
+export { default as Label } from './Label'
 
-import Icon from './Icon'
-import Indicator from './Indicator'
-import InputNumber from './InputNumber'
 
-import SearchBar from './SearchBar'
-import SwipeAction from './SwipeAction'
-import Switch from './Switch'
+export { default as Modal } from './Modal'
 
-import Tag from './Tag'
-import TabBar from './TabBar'
-import Toast from './Toast'
-
-export {
-    alert,
-    Animation,
-
-    Button,
-    Badge,
-
-    Checkbox,
-
-    DatePicker,
-    Dialog,
-
-    Label,
-
-    Modal,
-
-    Picker,
-    Popup,
-    PullToRefresh,
-
-    Icon,
-    Indicator,
-    InputNumber,
-
-    SearchBar,
-    SwipeAction,
-    Switch,
-
-    Tag,
-    TabBar,
-    Toast,
-}
