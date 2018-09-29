@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'icomoon';
-    src:  url('fonts/icomoon.eot?4zn964');
-    src:  url('fonts/icomoon.eot?4zn964#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?4zn964') format('truetype'),
-    url('fonts/icomoon.woff?4zn964') format('woff'),
-    url('fonts/icomoon.svg?4zn964#icomoon') format('svg');
+    src:  url('fonts/gingkoIcon.eot?4zn964');
+    src:  url('fonts/gingkoIcon.eot?4zn964#iefix') format('embedded-opentype'),
+    url('fonts/gingkoIcon.ttf?4zn964') format('truetype'),
+    url('fonts/gingkoIcon.woff?4zn964') format('woff'),
+    url('fonts/gingkoIcon.svg?4zn964#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -149,4 +149,7 @@
 }
 .icon-bell:before {
     content: "\e929";
+}
+.icon-clock-circle-o:before {
+    content: "\e92a";
 }

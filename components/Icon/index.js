@@ -46,6 +46,7 @@ const iconMap = [
     'user-check',
     'edit-plus',
     'bell',
+    'clock-circle-o'
 ];
 
 const sizeMap = {

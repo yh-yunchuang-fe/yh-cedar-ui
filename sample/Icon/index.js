@@ -45,6 +45,7 @@ const iconMap = [
     'user-check',
     'edit-plus',
     'bell',
+    'clock-circle-o'
 ];
 
 export default class IconDemo extends Component {
