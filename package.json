@@ -2,7 +2,7 @@
     "name": "yh-cedar-ui",
     "version": "1.0.0",
     "description": "react components for H5 projects",
-    "main": "src/components/index.js",
+    "main": "components/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "cross-env NODE_ENV=development nodemon --watch build ./build/dev-server.js"

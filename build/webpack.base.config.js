@@ -62,7 +62,7 @@ module.exports = {
         rules: [
             {
                 test: /\.(js|jsx)$/,
-                include: resolve('src'),
+                include: [resolve('src'), resolve('components'), resolve('sample')],
                 exclude: resolve('nodeModules'),
                 loader: 'babel-loader'
             },

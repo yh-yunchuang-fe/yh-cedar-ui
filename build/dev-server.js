@@ -21,7 +21,9 @@ const compiler = webpack(devWebpackConfig)
 const server = new webpackDevServer(compiler, options)
 
 server.listen(port, '0.0.0.0', function (err) {
-    console.log('listen on port 3003')
+    console.log(`listen on port ${port}`)
+    console.log('\n-------------\n')
+    console.log(`http://127.0.0.1:${port}/index.html`)
 })
 
 module.exports = server

@@ -9,7 +9,7 @@ import { render } from 'react-dom'
 import { HashRouter } from 'react-router-dom'
 import 'normalize.css'
 import './assets/css/base.less'
-import App from './sample/app'
+import App from '../sample/app'
 
 render(
     <HashRouter>
