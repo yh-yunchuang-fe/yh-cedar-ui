@@ -7,25 +7,29 @@ export default class MultipleLineText extends PureComponent {
         super(props)
 
         this.state = {
-            needMoreBtn: false,
+            height: 'auto',
+            needMoreBtn: true,
             showEllipsis: false
         }
     }
     componentDidMount() {
-        let scrollHeight = this.text.scrollHeight
+        const {line = 2} = this.props
         let offsetHeight = this.text.offsetHeight
+        let textLineHeight = this.testTextLine.scrollHeight
+        let height = textLineHeight * line
 
-        let needMoreBtn = scrollHeight > (offsetHeight + 5)
+        let needMoreBtn = offsetHeight > (height + 5)
 
         this.setState({
             needMoreBtn: needMoreBtn,
             showEllipsis: needMoreBtn,
-            scrollHeight: scrollHeight
+            height: height,
+            offsetHeight: offsetHeight
         })
     }
 
     collapseText() {
-        const {height} = this.props
+        const {height} = this.state
         
         this.setState({
             showEllipsis: true
@@ -33,18 +37,17 @@ export default class MultipleLineText extends PureComponent {
         this.text.style.height = height + 'px'
     }
 
-    expandText(e) {
-        console.log(e)
-        const {scrollHeight} = this.state
+    expandText() {
+        const {offsetHeight} = this.state
         this.setState({
             showEllipsis: false
         })
-        this.text.style.height = scrollHeight + 'px'
+        this.text.style.height = offsetHeight + 'px'
     }
 
     render() {
-        const {children, height, className, style, ellipsiClassName, ellipsisStyle} = this.props
-        const {needMoreBtn, showEllipsis} = this.state
+        const {children, className, style, ellipsiClassName, ellipsisStyle} = this.props
+        const {height, needMoreBtn, showEllipsis} = this.state
 
         return <div 
                 className={`ml-text-container ${className || ''}`}
@@ -52,7 +55,7 @@ export default class MultipleLineText extends PureComponent {
                 ref={(ref) => this.text=ref}
             >
                 {children}
-                {needMoreBtn && !showEllipsis && <span className="ml-ellipsis-btn" onClick={this.collapseText.bind(this)}>
+                {needMoreBtn && <span className="ml-ellipsis-btn" onClick={this.collapseText.bind(this)}>
                     <span>收起</span>
                     <Icon 
                         name="chevron-up" 
@@ -77,6 +80,7 @@ export default class MultipleLineText extends PureComponent {
                     />
                 </a>
             </div>}
+            <div style={{height: '1px', visibility: 'hidden'}} ref={ref => this.testTextLine = ref}>测试文字</div>
         </div>
     }
 }
