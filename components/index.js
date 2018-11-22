@@ -16,6 +16,7 @@ import Dialog from './Dialog'
 import Label from './Label'
 
 import Modal from './Modal'
+import MultipleLineText from './MultipleLineText'
 
 import Picker from './Picker'
 import Popup from './Popup'
@@ -48,6 +49,7 @@ export {
     Label,
 
     Modal,
+    MultipleLineText,
 
     Picker,
     Popup,

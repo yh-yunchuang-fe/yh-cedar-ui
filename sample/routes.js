@@ -4,6 +4,7 @@ import Button from './Button'
 import Badge from './Badge'
 import Dialog from './Dialog'
 import Modal from './Modal'
+import MultipleLineText from './MultipleLineText'
 import Picker from './Picker'
 import Icon from "./Icon"
 import Indicator from './Indicator'
@@ -44,6 +45,10 @@ const routes = [{
     path: '/Modal',
     component: Modal,
     name: 'Modal'
+},{
+    path: '/MultipleLineText',
+    component: MultipleLineText,
+    name: 'MultipleLineText'
 },{
     path: '/Picker',
     component: Picker,
