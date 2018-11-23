@@ -4,14 +4,12 @@ import './index.less'
 
 export default class MultipleLineTextDemo extends Component {
     render() {
-        return <div>
+        return <div className="container">
             <MultipleLineText
-                height={32}
-                style={{fontSize: 14}}
-                ellipsisStyle={{width: 76}}
+                
             >
-                从商品中心调取组合码商品份数和组合码单位接口如果组合码没有配置单位，单位默认显示“份”。
-                从商品中心调取组合码商品份数和组合码单位接口如果组合码没有配置单位，单位默认显示“份”。
+                从商品中心调取组合码商品份数和组合码单位接口如果组合码没有配置单位，单位默认显示份。
+                从商品中心调取组合码商品份数和组合码单位接口如果组合码没有配置单位，单位默认显示份。
             </MultipleLineText>
         </div>
     }

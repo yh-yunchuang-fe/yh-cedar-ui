@@ -8,23 +8,34 @@ export default class MultipleLineText extends PureComponent {
 
         this.state = {
             height: 'auto',
-            needMoreBtn: true,
-            showEllipsis: false
+            needMoreBtn: false,
+            showEllipsis: true
         }
     }
     componentDidMount() {
-        const {line = 2} = this.props
-        let offsetHeight = this.text.offsetHeight
-        let textLineHeight = this.testTextLine.scrollHeight
-        let height = textLineHeight * line
+        const {textLine = 2} = this.props
+        let clientHeight = this.textContainer.clientHeight
+        let clientWidth = this.textContainer.clientWidth
+        let singleLineHeight = this.testText.clientHeight
+        let singleTextWidth = this.testText.clientWidth
+        let ellipsisBtnWidth = this.ellipsisBtn.offsetWidth
 
-        let needMoreBtn = offsetHeight > (height + 5)
+        let height = singleLineHeight * textLine
+        let fontNum = parseInt(clientWidth / singleTextWidth) * textLine
+        this.originalText = this.text.innerText.toString()
+        let ellipsisFontNum = Math.ceil(ellipsisBtnWidth / singleTextWidth)
+        let displayFontNum = fontNum - ellipsisFontNum - 2
+        this.displayText = this.originalText.slice(0, displayFontNum) + '...'
+
+        this.text.innerText = this.displayText
+
+        let needMoreBtn = clientHeight > (height + 5)
 
         this.setState({
             needMoreBtn: needMoreBtn,
             showEllipsis: needMoreBtn,
             height: height,
-            offsetHeight: offsetHeight
+            offsetHeight: clientHeight
         })
     }
 
@@ -34,15 +45,20 @@ export default class MultipleLineText extends PureComponent {
         this.setState({
             showEllipsis: true
         })
-        this.text.style.height = height + 'px'
+        setTimeout(() => {
+            this.text.innerText = this.displayText
+        }, 100)
+        this.textContainer.style.height = height + 'px'
     }
 
     expandText() {
         const {offsetHeight} = this.state
+
+        this.text.innerText = this.originalText
         this.setState({
             showEllipsis: false
         })
-        this.text.style.height = offsetHeight + 'px'
+        this.textContainer.style.height = offsetHeight + 'px'
     }
 
     render() {
@@ -52,10 +68,14 @@ export default class MultipleLineText extends PureComponent {
         return <div 
                 className={`ml-text-container ${className || ''}`}
                 style={{...style, height: height}}
-                ref={(ref) => this.text=ref}
+                ref={(ref) => this.textContainer=ref}
             >
-                {children}
-                {needMoreBtn && <span className="ml-ellipsis-btn" onClick={this.collapseText.bind(this)}>
+                <span ref={ref => this.text = ref}>{children}</span>
+                {needMoreBtn && !showEllipsis && <span 
+                    className="ml-ellipsis-btn" 
+                    
+                    onClick={this.collapseText.bind(this)}
+                >
                     <span>收起</span>
                     <Icon 
                         name="chevron-up" 
@@ -64,12 +84,12 @@ export default class MultipleLineText extends PureComponent {
                         style={{marginLeft: 5}}
                     />
                 </span>}
-            {showEllipsis && <div 
+            {showEllipsis && <span 
                 className={`ml-more-container ${ellipsiClassName || ''}`} 
+                ref={ref => this.ellipsisBtn = ref}
                 style={ellipsisStyle}
                 onClick={this.expandText.bind(this)}
             >
-                <span className="ml-ellipsis">...</span>
                 <a className="ml-ellipsis-btn">
                     <span>更多</span>
                     <Icon 
@@ -79,8 +99,8 @@ export default class MultipleLineText extends PureComponent {
                         style={{marginLeft: 5}}
                     />
                 </a>
-            </div>}
-            <div style={{height: '1px', visibility: 'hidden'}} ref={ref => this.testTextLine = ref}>测试文字</div>
+            </span>}
+            <span style={{position: 'absolute' ,zIndex: -1, visibility: 'hidden'}} ref={ref => this.testText = ref}>测</span>
         </div>
     }
 }
