@@ -11,6 +11,7 @@ import Indicator from './Indicator'
 import InputNumber from './InputNumber'
 import Checkbox from './Checkbox'
 import PullToRefersh from './PullToRefresh'
+import Rate from './Rate'
 import SearchBar from './SearchBar'
 import SwipeAction from './SwipeAction'
 import Switch from './Switch'
@@ -61,6 +62,10 @@ const routes = [{
     path: '/PullToRefersh',
     component: PullToRefersh,
     name: 'PullToRefersh'
+},{
+    path: '/Rate',
+    component: Rate,
+    name: 'Rate'
 },{
     path: '/SearchBar',
     component: SearchBar,

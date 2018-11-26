@@ -26,6 +26,8 @@ import Icon from './Icon'
 import Indicator from './Indicator'
 import InputNumber from './InputNumber'
 
+import Rate from './Rate'
+
 import SearchBar from './SearchBar'
 import SwipeAction from './SwipeAction'
 import Switch from './Switch'
@@ -58,6 +60,8 @@ export {
     Icon,
     Indicator,
     InputNumber,
+
+    Rate,
 
     SearchBar,
     SwipeAction,
