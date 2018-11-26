@@ -11,13 +11,13 @@ export default class Rate extends PureComponent {
     }
 
     buildInitialState() {
-        const {count} = this.props
+        const {count, value} = this.props
         let rates = []
 
         for(let i = 0; i < count; i++) {
             rates.push({
                 key: 'rate' + i,
-                selected: false
+                selected: i < Number(value) ? true : false
             })
         }
 
@@ -26,7 +26,9 @@ export default class Rate extends PureComponent {
 
     changeState(index) {
         const {rates, beginClear} = this.state
-        const {allowClear, onChange} = this.props
+        const {allowClear, onChange, disabled} = this.props
+
+        if(disabled) {return}
 
         let operateRates = rates.slice()
         let originalRate = operateRates[index].selected
@@ -68,8 +70,9 @@ export default class Rate extends PureComponent {
 
     render() {
         const {rates} = this.state
+        const {disabled} = this.props
 
-        return <ul className="rate-container">
+        return <ul className="rate-container" style={{cursor: disabled ? 'not-allowed' : 'default'}}>
             {rates.map((rate, index) => {
                 return <li key={rate.key} className="rate-item" style={{width: '16px', height: '16px'}}>
                     <a className="rate-tag" onClick={this.changeState.bind(this, index, rate.key)}>
