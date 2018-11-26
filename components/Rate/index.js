@@ -5,7 +5,8 @@ export default class Rate extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            rates: this.buildInitialState()
+            rates: this.buildInitialState(),
+            beginClear: false
         }
     }
 
@@ -24,14 +25,15 @@ export default class Rate extends PureComponent {
     }
 
     changeState(index) {
-        const {rates} = this.state
-        const {allowClear} = this.props
+        const {rates, beginClear} = this.state
+        const {allowClear, onChange} = this.props
 
         let operateRates = rates.slice()
         let originalRate = operateRates[index].selected
-        let lastLightStarIndex = (rates.findIndex(rate => !rate.selected) + 5) % 5
+        let lastLightStarIndex = rates.findIndex(rate => !rate.selected) - 1
+        lastLightStarIndex = lastLightStarIndex < 0 ? rates.length - 1 : lastLightStarIndex
 
-        if(index === lastLightStarIndex && originalRate) {return}
+        if(!(allowClear && index === 0) && index === lastLightStarIndex && originalRate) {return}
 
         if(!originalRate) {
             for(let i = 0; i <= index; i++) {
@@ -42,13 +44,26 @@ export default class Rate extends PureComponent {
                 operateRates[i].selected = !originalRate
             }
             if(allowClear && index === 0) {
-                operateRates[index].selected = !originalRate
+                if(beginClear) {
+                    operateRates[index].selected = !originalRate
+                    this.setState({
+                        beginClear: false
+                    })
+                } else {
+                    this.setState({
+                        beginClear: true
+                    })
+                }
             }
         }
 
         this.setState({
             rates: operateRates
         })
+
+        let finalResult = allowClear && index === 0 && beginClear ? index : index + 1
+
+        onChange && onChange(finalResult)
     }
 
     render() {
