@@ -11,7 +11,7 @@ export default class Rate extends PureComponent {
     }
 
     buildInitialState() {
-        const {count, value} = this.props
+        const {count = 5, value} = this.props
         let rates = []
 
         for(let i = 0; i < count; i++) {
@@ -70,9 +70,9 @@ export default class Rate extends PureComponent {
 
     render() {
         const {rates} = this.state
-        const {disabled} = this.props
+        const {disabled, className, style = {}} = this.props
 
-        return <ul className="rate-container" style={{cursor: disabled ? 'not-allowed' : 'default'}}>
+        return <ul className={`rate-container ${className || ''}`} style={{...style, cursor: disabled ? 'not-allowed' : 'default'}}>
             {rates.map((rate, index) => {
                 return <li key={rate.key} className="rate-item" style={{width: '16px', height: '16px'}}>
                     <a className="rate-tag" onClick={this.changeState.bind(this, index, rate.key)}>
