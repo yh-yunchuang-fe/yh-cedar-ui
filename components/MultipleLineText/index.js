@@ -35,6 +35,11 @@ export default class MultipleLineText extends PureComponent {
 
         let needMoreBtn = clientHeight > (height + 5)
 
+        this.setState({
+            needMoreBtn: needMoreBtn,
+            showEllipsis: needMoreBtn,
+        })
+
         if(needMoreBtn) {
             let clientWidth = this.realText.clientWidth
             let singleTextWidth = this.testText.clientWidth
@@ -46,11 +51,13 @@ export default class MultipleLineText extends PureComponent {
             let displayFontNum = fontNum - ellipsisFontNum - 2
             this.displayText = this.originalText.slice(0, displayFontNum) + '...'
             this.text.innerText = this.displayText
+        } else {
+            this.originalText = this.originalText || this.text.innerText.toString()
+            this.displayText = this.originalText
+            this.text.innerText = this.displayText
         }
 
         this.setState({
-            needMoreBtn: needMoreBtn,
-            showEllipsis: needMoreBtn,
             height: height,
             clientHeight: clientHeight
         })

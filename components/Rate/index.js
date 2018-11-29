@@ -78,7 +78,7 @@ export default class Rate extends PureComponent {
                     <a className="rate-tag" onClick={this.changeState.bind(this, index, rate.key)}>
                         <img 
                             className="rate-img" 
-                            src={rate.selected ? require("./imgs/star-active.png") : require("./imgs/star.png")} 
+                            src={rate.selected ? require("./imgs/star-active@2x.png") : require("./imgs/star@2x.png")} 
                         />
                     </a>
                 </li>
