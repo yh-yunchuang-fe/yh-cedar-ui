@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './index.less'
 import { Transition } from 'react-transition-group'
 import Indicator from '../Indicator'
-import Icon from '../Icon'
 
 export default class PullToRefresh extends Component {
     static defaultProps = {
@@ -106,7 +104,7 @@ export default class PullToRefresh extends Component {
     }
 
     onMoveStart = (e) => {
-        const {refreshing, distance} = this.state
+        const {refreshing} = this.state
 
         if(refreshing || !!this.container.scrollTop) {return}
 
@@ -210,12 +208,11 @@ export default class PullToRefresh extends Component {
     renderLoading() {
         const {
             prefixCls,
-            refershText,
             refershControl,
             duration
         } = this.props
 
-        const {headerHeight, distance, refreshing, pullingUp} = this.state
+        const {headerHeight, distance, pullingUp} = this.state
 
         const transitionStyles = {
             entering: { transition: `0ms cubic-bezier(0.1, 0.57, 0.1, 1)` },
@@ -224,8 +221,7 @@ export default class PullToRefresh extends Component {
             exited: { transition: `${duration}ms cubic-bezier(0.1, 0.57, 0.1, 1)` }
         }
 
-        if(true) {
-            return <Transition
+        return <Transition
                 in={!pullingUp}
                 timeout={0}
             >
@@ -257,7 +253,6 @@ export default class PullToRefresh extends Component {
                 </div>}
             
             </Transition>
-        }
     }
 
     renderFooter() {
