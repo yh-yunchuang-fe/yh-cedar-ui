@@ -24,7 +24,7 @@ const Indicator = (props) => {
     return (
         <div className={cls} {...restProps}>
             <Image name={spinnerImg} className={imgCls} />
-            <span className={textCls} style={textStyle}>{text}</span>
+            { text ? <span className={textCls} style={textStyle}>{text}</span> : null }
         </div>
     );
 };
