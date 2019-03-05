@@ -37,9 +37,8 @@ export default class Modal extends Component {
                 button.onPress()
             }
         }
-
         return (
-            <a key={index} href="javascript:;" className={`${prefixCls}-button`} role="button" onClick={onClickFn}>
+            <a key={index} style={{color: button.color}} href="javascript:;" className={`${prefixCls}-button`} role="button" onClick={onClickFn}>
                 {button.text || 'Button'}
             </a>
         )
@@ -65,6 +64,7 @@ export default class Modal extends Component {
         const {
             prefixCls,
             style,
+            title,
             children,
             className,
             maskClassName
@@ -87,7 +87,7 @@ export default class Modal extends Component {
                 maskClassName={maskClassName}
                 {...resetProps}>
                 <div className={`${prefixCls}-content`}>
-                    { this.renderHeader() }
+                    { title ? this.renderHeader() : null }
                     <div className={`${prefixCls}-body`}>
                         { children }
                     </div>

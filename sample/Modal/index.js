@@ -9,7 +9,8 @@ export default class ModalDemo extends Component {
     constructor (props) {
         super(props)
         this.state = {
-            visible: false
+            visible: false,
+            titleVisible: false,
         }
     }
 
@@ -36,11 +37,24 @@ export default class ModalDemo extends Component {
         ])
     }
 
+    openColor = () => {
+        alert('', '张老板帅吗？', [
+            { text: '帅', color: '#24A8E8', onPress: () => console.log('cancel') },
+            { text: '非常帅', color: '#FD7622', onPress: () => console.log('ok') },
+        ])
+    }
+
     render () {
         return (
             <div className="modal-container">
                 <Button type="primary" inline onClick={this.show}>打开Modal</Button>
                 <Button type="primary" inline onClick={this.openAlert}>打开Alert</Button>
+                <Button type="primary" inline onClick={this.openColor}>可修改按钮颜色</Button>
+                <Button type="primary" inline onClick={()=>{
+                    this.setState({
+                        titleVisible: true
+                    })
+                }}>无标题Modal</Button>
                 <Modal
                     visible={this.state.visible}
                     maskCloseable={false}
@@ -53,6 +67,19 @@ export default class ModalDemo extends Component {
                 >
                     <div>
                         <h1>zhangyisdkkkk</h1>
+                    </div>
+                </Modal>
+                <Modal
+                    visible={this.state.titleVisible}
+                    maskCloseable={false}
+                    onClose={this.hide}
+                    footer={[
+                        {text: 'cancel', color: 'red', onPress: ()=>{ this.setState({
+                            titleVisible: false
+                        })}}
+                    ]}>
+                    <div>
+                        <h1>hello world</h1>
                     </div>
                 </Modal>
 
