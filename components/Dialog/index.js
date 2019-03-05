@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import Animation from '../Animation'
 import LazyRenderBox from './LazyRenderBox'
 import './style/index.less'
+import { fixedBody, looseBody } from "../../src/utils";
 
 export default class Dialog extends Component {
 
@@ -81,6 +82,7 @@ export default class Dialog extends Component {
     componentDidUpdate() {
         const props = this.props
         if (props.visible) {
+            fixedBody()
             this.openTime = Date.now()
         }
     }
@@ -101,6 +103,7 @@ export default class Dialog extends Component {
                                style={this.getMaskStyle()}
                                className={`${prefixCls}-mask ${maskClassName || ''}`}/>
             )
+            fixedBody()
         }
         if (maskTransition) {
             const maskTransitionName = this.getMaskTransitionName()
@@ -113,6 +116,7 @@ export default class Dialog extends Component {
                     {maskElement}
                 </Animation>
             )
+            looseBody()
         }
 
         return maskElement
