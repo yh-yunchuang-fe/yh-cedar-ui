@@ -173,11 +173,11 @@ export default class InputNumber extends Component {
     }
 
     getInputRef(ref) {
-        const {getInpuRef} = this.props
+        const {getInputRef} = this.props
 
         this.input = ref
 
-        getInpuRef && getInpuRef(ref)
+        getInputRef && getInputRef(ref)
     }
 
     render() {
