@@ -1,0 +1,43 @@
+.@{modalPrefixClass} {
+    .button-common() {
+        box-sizing: border-box;
+        text-align: center;
+        text-decoration: none;
+        outline: none;
+        color: @color-link;
+        font-size: @modal-button-font-size;
+        height: @modal-button-height;
+        line-height: @modal-button-height;
+        display: block;
+        .ellipsis()
+    }
+
+    &-button-group-h {
+        border-top: @border-width solid @border-color-base; /* no */
+        display: flex;
+        .@{modalPrefixClass}-button {
+            -webkit-touch-callout: none;
+            flex: 1;
+            .button-common();
+
+            &:first-child {
+                color: @color-text-placeholder;
+                border-right: @border-width solid @border-color-base; /* no */
+            }
+        }
+    }
+
+    &-button-group-v {
+        .@{modalPrefixClass}-button {
+            -webkit-touch-callout: none;
+            display: block;
+            border-top: @border-width solid @border-color-base; /* no */
+            .button-common();
+        }
+    }
+
+    &-button-active {
+      background-color: @fill-tap;
+    }
+
+}
