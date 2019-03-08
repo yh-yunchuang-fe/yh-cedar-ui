@@ -10,8 +10,8 @@
         "react-hot-loader/babel"
     ],
     "env": {
-        "production": {
-            "plugins": ["transform-remove-console"]
-        }
+        // "production": {
+        //     "plugins": ["transform-remove-console"]
+        // }
     }
 }
