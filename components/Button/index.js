@@ -40,7 +40,7 @@ export default class Button extends Component {
     render () {
         const {
             children, prefixCls, className, type, size, inline,
-            disabled, onClick, ...restProps
+            disabled, onClick, style, ...restProps
         } = this.props
 
         const wrapCls = {
@@ -53,6 +53,9 @@ export default class Button extends Component {
             [`${prefixCls}-inline`]: inline,
             [`${prefixCls}-disabled`]: disabled,
         }
+        if (!!style.height) {
+            style.lineHeight = style.height + 'px'
+        }
 
         //需要加上 ontouchstart 事件，否则在iOS下css :active伪类不会被触发
         return (
@@ -62,6 +65,7 @@ export default class Button extends Component {
                 className={classNames(wrapCls)}
                 onClick={disabled ? undefined : onClick}
                 aria-disabled={disabled}
+                style={style}
                 {...restProps}
             >
                 <span>
