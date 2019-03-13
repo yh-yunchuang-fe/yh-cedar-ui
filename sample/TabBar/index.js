@@ -13,6 +13,7 @@ export default class TabBarDemo extends Component {
         return (
             <div style={{marginTop: 20}}>
                 <TabBar items={['first tab', 'second tab', 'third tab']} style={{marginBottom: 20}}/>
+                <TabBar items={['first tab', 'second tab', 'third tab', 'fourth tab', 'fifth tab']} scroll style={{marginBottom: 20, width: 350}}/>
                 <TabBar items={['first tab', 'second tab', 'third tab']} defaultActiveIndex={1} style={{marginBottom: 20}}/>
                 <TabBar items={['first tab', 'second tab', 'third tab']} barTintColor="#ddd" tintColor="red"/>
             </div>
