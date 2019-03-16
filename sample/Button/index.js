@@ -21,12 +21,13 @@ export default class ButtonDemo extends Component {
                     <Button type="ghost" inline style={{margin: 20}}>ghost</Button>
                 </div>
                 <div>
+                    <Button type="primary" inline style={{ marginBottom: 20 }}>primary</Button>
 
                     <Button type="ghost" inline  size="small" style={{margin: 20}}>
                         ghost
                     </Button>
                     <Button type="ghost" disabled inline style={{ margin: 20 }}>ghost</Button>
-                    <Button type="primary"  style={{ margin: 20, height: 200, width: 400 }}>设置高度垂直居中</Button>
+                    <Button type="primary"  style={{ margin: 20, height: 90, width: 400 }}>文字垂直居中</Button>
                 </div>
             </div>
         )

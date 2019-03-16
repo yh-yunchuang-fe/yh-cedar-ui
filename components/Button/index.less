@@ -2,9 +2,35 @@
 @import '../../src/assets/css/mixins.less';
 
 @buttonPrefixCls: yh-button;
+.border-mixin(@border-color) {
+    &::before{
+        position: absolute;
+        content: '';
+        box-sizing: border-box;
+        top: 0; bottom: 0; left: 0; right: 0;
+        height: 100%;
+        width: 100%;
+        border: 1px solid @border-color; /*no*/
+        border-radius: @button-radius;   /*no*/
 
+        @media screen and (-webkit-min-device-pixel-ratio: 2) {
+            width: 200%;
+            height: 200%;
+            transform: scale(.5);
+            transform-origin: 0 0;
+        }
+
+        @media screen and (-webkit-min-device-pixel-ratio: 3) {
+            width: 300%;
+            height: 300%;
+            transform: scale(.3333);
+            transform-origin: 0 0;
+        }
+    }
+}
 .@{buttonPrefixCls} {
     display: block;
+    position: relative;
     outline: 0 none;
     -webkit-appearance: none;
     box-sizing: border-box;
@@ -13,9 +39,9 @@
     font-size: @button-font-size;
     height: @button-height;
     line-height: @button-height;
-    border-radius: @button-radius;
+    // border-radius: @button-radius;
 
-    overflow: hidden;
+    // overflow: hidden;
     text-overflow: ellipsis;
     word-break: break-word;
     white-space: nowrap;
@@ -23,7 +49,7 @@
     // default
     color: @color-text-base;
     background-color: @fill-base;
-    border: @border-width solid @border-color-base; /*no*/
+    // border: @border-width solid @border-color-base; /*no*/
 
     &:active {
         background-color: @fill-tap;
@@ -40,14 +66,14 @@
     &-primary {
         color: @color-text-base-inverse;
         background-color: @primary-button-fill;
-        border: @border-width solid @primary-button-fill;/*no*/
+        // border: @border-width solid @primary-button-fill;/*no*/
+        .border-mixin(@primary-button-fill);
+
         // &:active, // uc browser not work normal
         &.@{buttonPrefixCls}:active {
             background-color: @primary-button-fill-tap;
         }
-        &:before {
-          border: 1px solid @primary-button-fill; /*no*/
-        }
+
         &.@{buttonPrefixCls}-disabled {
             color: hsla(0,0%,100%,.6);
             opacity: .4;
@@ -60,6 +86,7 @@
     &-warning {
         color: @color-text-base-inverse;
         background-color: @brand-error;
+        .border-mixin(@brand-error);
         &.@{buttonPrefixCls}:active {
             background-color: #d24747;
         }
@@ -74,9 +101,10 @@
     }
 
     &-ghost {
+        .border-mixin(@ghost-button-color);
         color: @ghost-button-color;
         background-color: transparent;
-        border: @border-width solid @ghost-button-color; /*no*/
+        // border: @border-width solid @ghost-button-color; /*no*/
         // &:active, // uc browser not work normal
         &.@{buttonPrefixCls}:active {
             //color: @color-text-base-inverse;
@@ -87,6 +115,8 @@
             //border: @border-width solid rgba(16, 142, 233, 0.6); /*no*/
         }
         &.@{buttonPrefixCls}-disabled {
+            //  border: @border-width solid rgba(0,0,0,.2);/*no*/
+            .border-mixin(rgba(0,0,0,.2));
             color: rgba(0,0,0,.2);
             &:active {
                 color: rgba(0,0,0,.2);
@@ -104,7 +134,7 @@
         height: @button-height-sm;
         line-height: @button-height-sm;
         padding: 0 @button-h-spacing;
-        border-radius: @button-radius;
+        // border-radius: @button-radius;
     }
 
     //&,
@@ -124,53 +154,54 @@
     //}
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-    html:not([data-scale]) .@{buttonPrefixCls} {
-        position:relative;
-        border: none;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-        &:before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 200%;
-            height: 200%;
-            border: @border-width solid @border-color-base; /*no*/
-            border-radius: @button-border-radius;
-            -webkit-transform-origin: 0 0;
-            -ms-transform-origin: 0 0;
-            transform-origin: 0 0;
-            -webkit-transform: scale(.5);
-            -ms-transform: scale(.5);
-            transform: scale(.5);
-            box-sizing: border-box;
-            pointer-events: none;
-            z-index: -1;
-        }
-    }
 
-    html:not([data-scale]) .@{buttonPrefixCls}-primary {
-        &:before {
-            border: @border-width solid @primary-button-fill;/*no*/
-        }
-    }
+// @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+//     html:not([data-scale]) .@{buttonPrefixCls} {
+//         position:relative;
+//         border: none;
+//         -webkit-transform: translateZ(0);
+//         transform: translateZ(0);
+//         &:before {
+//             content: "";
+//             position: absolute;
+//             left: 0;
+//             top: 0;
+//             width: 200%;
+//             height: 200%;
+//             border: @border-width solid @border-color-base; /*no*/
+//             border-radius: @button-border-radius;
+//             -webkit-transform-origin: 0 0;
+//             -ms-transform-origin: 0 0;
+//             transform-origin: 0 0;
+//             -webkit-transform: scale(.5);
+//             -ms-transform: scale(.5);
+//             transform: scale(.5);
+//             box-sizing: border-box;
+//             pointer-events: none;
+//             z-index: -1;
+//         }
+//     }
 
-    html:not([data-scale]) .@{buttonPrefixCls}-warning {
-        &:before {
-            border: @border-width solid @brand-error;/*no*/
-        }
-    }
+//     html:not([data-scale]) .@{buttonPrefixCls}-primary {
+//         &:before {
+//             border: @border-width solid @primary-button-fill;/*no*/
+//         }
+//     }
 
-    html:not([data-scale]) .@{buttonPrefixCls}-ghost {
-        &:before {
-            border: @border-width solid @ghost-button-color;/*no*/
-        }
-        &.@{buttonPrefixCls}-disabled {
-            &:before {
-                border: @border-width solid rgba(0,0,0,.2);/*no*/
-            }
-        }
-    }
-}
+//     html:not([data-scale]) .@{buttonPrefixCls}-warning {
+//         &:before {
+//             border: @border-width solid @brand-error;/*no*/
+//         }
+//     }
+
+//     html:not([data-scale]) .@{buttonPrefixCls}-ghost {
+//         &:before {
+//             border: @border-width solid @ghost-button-color;/*no*/
+//         }
+//         &.@{buttonPrefixCls}-disabled {
+//             &:before {
+//                 border: @border-width solid rgba(0,0,0,.2);/*no*/
+//             }
+//         }
+//     }
+// }
