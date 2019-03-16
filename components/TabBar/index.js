@@ -29,6 +29,8 @@ export default class TabBar extends Component {
         tabBarPosition: 'top',
         className: '',
         style: null,
+        scroll: false,
+        scrolWidth: 120,
         items: [],
         barTintColor: '',   //tabbar 背景色
         tintColor: '',      //选中的字体颜色
@@ -43,6 +45,11 @@ export default class TabBar extends Component {
         tabBarPosition: PropTypes.string,
         className: PropTypes.string,
         style: PropTypes.object,
+        scroll: PropTypes.bool,
+        scrolWidth: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number
+        ]),
         items: PropTypes.array,
         barTintColor: PropTypes.string,   //tabbar 背景色
         tintColor: PropTypes.string,      //选中的字体颜色
@@ -69,21 +76,29 @@ export default class TabBar extends Component {
 
     renderTabs () {
         const {
-            prefixCls, items, tintColor, unselectedTintColor
+            prefixCls, items, tintColor, unselectedTintColor, scroll, scrolWidth
         } = this.props
 
         const activeIndex = this.state.activeIndex
 
         return items.map((item, index) => {
             const color = activeIndex === index ? tintColor : unselectedTintColor
+
             const cls = classNames({
-                [`${prefixCls}-tab`]: true,
+                [`${prefixCls}-items`]: true,
+                [`${prefixCls}-tab`]: !scroll,
                 [`${prefixCls}-tab-active`]: activeIndex === index
             })
+
+            const scrollSty = !scroll ? { color } : {
+                ...color,
+                minWidth: scrolWidth
+            }
+
             return (
                 <div
                     className={cls}
-                    style={{color}}
+                    style={scrollSty}
                     key={index}
                     onClick={this.onTabClick.bind(this, index, item)}>
                     <span>{item}</span>
@@ -95,7 +110,7 @@ export default class TabBar extends Component {
     render() {
         const {
             prefixCls, tabBarPosition, className, style, barTintColor,
-            items, tintColor, underline
+            items, tintColor, underline, scroll, scrolWidth
         } = this.props
 
         const {
@@ -105,6 +120,7 @@ export default class TabBar extends Component {
         const wrapCls = classNames({
             [prefixCls]: true,
             [className]: className,
+            [`${prefixCls}-wrap`]: !scroll ? false : true,
             [`${prefixCls}-top`]: tabBarPosition === 'top',
             [`${prefixCls}-bottom`]: tabBarPosition === 'bottom',
             [`${prefixCls}-line`]: underline
@@ -123,11 +139,17 @@ export default class TabBar extends Component {
             borderColor: tintColor || ''
         }
 
+        const scrollSty = {
+            width: `${scrolWidth}px`,
+            left: `${scrolWidth * activeIndex}px`,
+            borderColor: tintColor || ''
+        }
+
         return (
             <div className={wrapCls} style={wrapSty}>
                 { this.renderTabs() }
                 {
-                    underline && <div className={`${prefixCls}-underline`} ref="underline" style={underSty}/>
+                    underline && <div className={`${prefixCls}-underline`} ref="underline" style={!scroll ? underSty : scrollSty}/>
                 }
             </div>
         )

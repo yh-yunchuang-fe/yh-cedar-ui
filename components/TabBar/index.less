@@ -14,16 +14,25 @@
     box-sizing: border-box;
     background-color: #fff;
 
-    &-tab {
-        flex: 1;
+    &-wrap {
+        width: 100%;
+        overflow: scroll;
+    }
+
+    &-items {
         height: @tabBarHeight;
         line-height: @tabBarHeight;
         text-align: center;
         color: @color-text-base;
         font-size: @font-size-base;
+        white-space: nowrap;
         &.@{tabBarPrefixCls}-tab-active {
             color: @brand-primary;
         }
+    }
+
+    &-tab {
+        flex: 1;
     }
 
     &-underline {
@@ -31,7 +40,6 @@
         bottom: 0;
         border: 1px solid @brand-primary; /*no*/
         z-index: 10;
-
         -webkit-transition: left .3s cubic-bezier(.35,0,.25,1), width .3s cubic-bezier(.35,0,.25,1);
         transition: left .3s cubic-bezier(.35,0,.25,1), width .3s cubic-bezier(.35,0,.25,1);
         will-change: left,width;
