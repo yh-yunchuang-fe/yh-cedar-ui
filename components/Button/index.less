@@ -8,23 +8,25 @@
         content: '';
         box-sizing: border-box;
         top: 0; bottom: 0; left: 0; right: 0;
-        height: 100%;
-        width: 100%;
         border: 1px solid @border-color; /*no*/
         border-radius: @button-radius;   /*no*/
 
-        @media screen and (-webkit-min-device-pixel-ratio: 2) {
+        @media (-webkit-min-device-pixel-ratio: 2),(min-resolution: 2dppx) {
             width: 200%;
             height: 200%;
             transform: scale(.5);
             transform-origin: 0 0;
+            border: 1px solid @border-color;     /*no*/
+            border-radius: @button-radius * 2;   /*no*/
         }
 
-        @media screen and (-webkit-min-device-pixel-ratio: 3) {
+        @media (-webkit-min-device-pixel-ratio: 3),(min-resolution: 3dppx) {
             width: 300%;
             height: 300%;
             transform: scale(.3333);
             transform-origin: 0 0;
+            border: 1px solid @border-color;     /*no*/
+            border-radius: @button-radius * 3;   /*no*/
         }
     }
 }
@@ -39,12 +41,7 @@
     font-size: @button-font-size;
     height: @button-height;
     line-height: @button-height;
-    // border-radius: @button-radius;
-
-    // overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-word;
-    white-space: nowrap;
+    border-radius: @button-radius; /*no*/
 
     // default
     color: @color-text-base;
@@ -86,7 +83,6 @@
     &-warning {
         color: @color-text-base-inverse;
         background-color: @brand-error;
-        .border-mixin(@brand-error);
         &.@{buttonPrefixCls}:active {
             background-color: #d24747;
         }
@@ -155,6 +151,14 @@
 }
 
 
+.wrap {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+        white-space: nowrap;
+}
 // @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 //     html:not([data-scale]) .@{buttonPrefixCls} {
 //         position:relative;
