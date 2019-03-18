@@ -67,10 +67,12 @@ export default class Button extends Component {
                 aria-disabled={disabled}
                 style={style}
                 {...restProps}
-            >
-                <span>
-                { children }
-                </span>
+            >   
+                <div className='wrap'>
+                    <span>
+                        { children }
+                    </span>
+                </div>
             </a>
         )
     }
