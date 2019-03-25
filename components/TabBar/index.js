@@ -30,7 +30,7 @@ export default class TabBar extends Component {
         className: '',
         style: null,
         scroll: false,
-        scrolWidth: 120,
+        scrollWidth: 120,
         items: [],
         barTintColor: '',   //tabbar 背景色
         tintColor: '',      //选中的字体颜色
@@ -46,7 +46,7 @@ export default class TabBar extends Component {
         className: PropTypes.string,
         style: PropTypes.object,
         scroll: PropTypes.bool,
-        scrolWidth: PropTypes.oneOfType([
+        scrollWidth: PropTypes.oneOfType([
             PropTypes.string,
             PropTypes.number
         ]),
@@ -68,17 +68,37 @@ export default class TabBar extends Component {
         this.setState({
             activeIndex
         })
-        if (this.props.onChange) {
-            this.props.onChange(activeIndex, item)
+        const { onChange, scroll } = this.props
+        if (onChange) {
+            onChange(activeIndex, item)
+        }
+        if(scroll) {
+            this.autoWidth(activeIndex)
         }
     }
 
+    autoWidth = (activeIndex) => {
+        const { scrollWidth } = this.props
+        const parent = this.autoScroll.parentNode
+        const children = parent.childNodes[activeIndex]
+
+        // 1.总宽度的一半
+        const width = parent.clientWidth
+        // 2.点击的距离左边的宽度
+        const leftWidth = scrollWidth * activeIndex / 2
+        // 3.点击的宽度的一半
+        const activeWidth = scrollWidth / 2
+        // 4.滚动条滚动的距离
+        const offsetLeft = children.offsetLeft
+
+        const scrollLeft = offsetLeft + (leftWidth - width) + activeWidth
+        this.scrollWrap.scrollLeft = scrollLeft
+    }
 
     renderTabs () {
         const {
-            prefixCls, items, tintColor, unselectedTintColor, scroll, scrolWidth
+            prefixCls, items, tintColor, unselectedTintColor, scroll, scrollWidth
         } = this.props
-
         const activeIndex = this.state.activeIndex
 
         return items.map((item, index) => {
@@ -92,11 +112,13 @@ export default class TabBar extends Component {
 
             const scrollSty = !scroll ? { color } : {
                 ...color,
-                minWidth: scrolWidth
+                minWidth: scrollWidth,
+                left: 100
             }
 
             return (
                 <div
+                    ref={(ref) => {this.autoScroll = ref}}
                     className={cls}
                     style={scrollSty}
                     key={index}
@@ -110,7 +132,7 @@ export default class TabBar extends Component {
     render() {
         const {
             prefixCls, tabBarPosition, className, style, barTintColor,
-            items, tintColor, underline, scroll, scrolWidth
+            items, tintColor, underline, scroll, scrollWidth
         } = this.props
 
         const {
@@ -140,13 +162,13 @@ export default class TabBar extends Component {
         }
 
         const scrollSty = {
-            width: `${scrolWidth}px`,
-            left: `${scrolWidth * activeIndex}px`,
+            width: `${scrollWidth}px`,
+            left: `${scrollWidth * activeIndex}px`,
             borderColor: tintColor || ''
         }
 
         return (
-            <div className={wrapCls} style={wrapSty}>
+            <div ref={(ref) => this.scrollWrap = ref} className={wrapCls} style={wrapSty}>
                 { this.renderTabs() }
                 {
                     underline && <div className={`${prefixCls}-underline`} ref="underline" style={!scroll ? underSty : scrollSty}/>
