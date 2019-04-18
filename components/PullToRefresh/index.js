@@ -23,7 +23,7 @@ export default class PullToRefresh extends Component {
         refershText: '加载中',
         upRefreshText: '释放更新',
         refershControl: null,
-        pullRate: 0.5,
+        pullRate: 0.4,
         duration: 800
     }
 
@@ -41,6 +41,8 @@ export default class PullToRefresh extends Component {
             propsLoading: false,
             isLoading: false
         }
+
+        this.scrollNegativeTop = false
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -87,17 +89,28 @@ export default class PullToRefresh extends Component {
         let element = e.target
         const { onLoadMore, loading, hasMore, distanceLoadMore} = this.props
         const {refreshing, isLoading} = this.state
+        
+        if(this.container.scrollTop < 0) {
+            if(this.scrollNegativeTop) {return}
 
+            this.container.style.setProperty('-webkit-overflow-scrolling', 'auto')
+            this.scrollNegativeTop = true
+        } else {
+            if(!this.scrollNegativeTop) {return}
+            this.container.style.setProperty('-webkit-overflow-scrolling', 'touch')
+            this.scrollNegativeTop = false
+        }
         //在刷新、加载更多、外部明确告知无更多消息时，不触发onloadmore
         if(isLoading || loading || refreshing || !hasMore) {return}
-
+        
         let {
             offsetHeight, scrollTop, scrollHeight
         } = element
 
+
         if (scrollTop >= (scrollHeight - offsetHeight) * distanceLoadMore) {
             this.setState({isLoading: true})
-
+            
             onLoadMore && onLoadMore()
             
         }
@@ -118,7 +131,7 @@ export default class PullToRefresh extends Component {
 
     onMouseMove = (e) => {
         //不在首页，不触发
-        if(!this.onDrag || !!this.container.scrollTop) {return}
+        if(!this.onDrag || this.container.scrollTop > 0) {return}
 
         const {beginPosY, refreshing} = this.state
         const {pullRate} = this.props
@@ -138,7 +151,8 @@ export default class PullToRefresh extends Component {
     }
 
     onMouseEnd = (e) => {
-        if(!!this.container.scrollTop) {return}
+        if(this.container.scrollTop > 0) {return}
+        
         const {onRefresh} = this.props
 
         this.onDrag = false
@@ -148,16 +162,19 @@ export default class PullToRefresh extends Component {
         let distance = endPosY - beginPosY 
 
         if(refreshing) {return}
-
+        
         if(distance * pullRate >= headerHeight) {
-            onRefresh && onRefresh()
-            this.setState({
-                beginPosY: null, //设置null是为了区分用户释放手指与其他状态
-                endPosY: null,
-                distance: headerHeight,
-                refreshing: true
+            
+            setTimeout(() => {
+                this.setState({
+                    beginPosY: null, //设置null是为了区分用户释放手指与其他状态
+                    endPosY: null,
+                    distance: headerHeight,
+                    refreshing: true
+                })
+                onRefresh && onRefresh()
             })
-
+            
             return
         } else {
             this.setState({
