@@ -113,7 +113,7 @@ export default class Checkbox extends Component {
         return (
            <div className={prefixCls}
                 {...restProps}
-                onClick={this.handleClick}
+                onClick={disabled ? null : this.handleClick}
             >
                 <div className={'container'} style={style}>
                     {dir === 'left' ? this.renderIcon() : null}
