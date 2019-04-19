@@ -53,7 +53,7 @@ export default class Button extends Component {
             [`${prefixCls}-inline`]: inline,
             [`${prefixCls}-disabled`]: disabled,
         }
-        if (!!style.height) {
+        if (style && style.height) {
             style.lineHeight = style.height + 'px'
         }
 
