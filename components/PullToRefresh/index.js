@@ -91,14 +91,15 @@ export default class PullToRefresh extends Component {
         const {refreshing, isLoading} = this.state
         
         if(this.container.scrollTop < 0) {
-            if(this.scrollNegativeTop) {return}
-
-            this.container.style.setProperty('-webkit-overflow-scrolling', 'auto')
-            this.scrollNegativeTop = true
+            if(!this.scrollNegativeTop) {
+                this.container.style.setProperty('-webkit-overflow-scrolling', 'auto')
+                this.scrollNegativeTop = true
+            }
         } else {
-            if(!this.scrollNegativeTop) {return}
-            this.container.style.setProperty('-webkit-overflow-scrolling', 'touch')
-            this.scrollNegativeTop = false
+            if(this.scrollNegativeTop) {
+                this.container.style.setProperty('-webkit-overflow-scrolling', 'touch')
+                this.scrollNegativeTop = false
+            }
         }
         //在刷新、加载更多、外部明确告知无更多消息时，不触发onloadmore
         if(isLoading || loading || refreshing || !hasMore) {return}
