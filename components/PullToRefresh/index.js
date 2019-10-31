@@ -24,7 +24,8 @@ export default class PullToRefresh extends Component {
         upRefreshText: '释放更新',
         refershControl: null,
         pullRate: 0.4,
-        duration: 800
+        duration: 800,
+        refresh: true
     }
 
     constructor(props) {
@@ -33,7 +34,7 @@ export default class PullToRefresh extends Component {
         this.state = {
             propRefreshing: false, //记录传过来的刷新值
             refreshing: false, //是否在刷新
-            headerHeight: 59, //组件头部loading高度, 超过这个高度并且释放手指才会触发刷新
+            headerHeight: props.refresh ? 59 : 0, //组件头部loading高度, 超过这个高度并且释放手指才会触发刷新
             beginPosY: 0,
             endPosY: 0,
             distance: 0,
@@ -76,8 +77,9 @@ export default class PullToRefresh extends Component {
     }
 
     componentDidMount() {
-        const {refreshing} = this.props
+        const {refresh, refreshing} = this.props
 
+        if(!refresh) {return}
         this.setState({
             headerHeight: this.header.offsetHeight, //拿到实际的loading高度
             distance: refreshing ? this.header.offsetHeight : 0
@@ -118,21 +120,23 @@ export default class PullToRefresh extends Component {
     }
 
     onMoveStart = (e) => {
+        const {refresh} = this.props
         const {refreshing} = this.state
 
-        if(refreshing || !!this.container.scrollTop) {return}
+        if(!refresh || refreshing || !!this.container.scrollTop) {return}
 
         this.onDrag = true
         let pos = this.getEventPos(e)
-
+        console.log('------')
         this.setState({
             beginPosY: pos.y
         })
     }
 
     onMouseMove = (e) => {
+        const {refresh} = this.props
         //不在首页，不触发
-        if(!this.onDrag || this.container.scrollTop > 0) {return}
+        if(!refresh || !this.onDrag || this.container.scrollTop > 0) {return}
 
         const {beginPosY, refreshing} = this.state
         const {pullRate} = this.props
@@ -152,10 +156,10 @@ export default class PullToRefresh extends Component {
     }
 
     onMouseEnd = (e) => {
-        if(this.container.scrollTop > 0) {return}
+        const {refresh, onRefresh} = this.props
         
-        const {onRefresh} = this.props
-
+        if(!refresh || this.container.scrollTop > 0) {return}
+        
         this.onDrag = false
         const {beginPosY, endPosY, headerHeight, refreshing} = this.state
         const {pullRate} = this.props
@@ -227,7 +231,8 @@ export default class PullToRefresh extends Component {
         const {
             prefixCls,
             refershControl,
-            duration
+            duration,
+            refresh
         } = this.props
 
         const {headerHeight, distance, pullingUp} = this.state
@@ -239,7 +244,7 @@ export default class PullToRefresh extends Component {
             exited: { transition: `${duration}ms cubic-bezier(0.1, 0.57, 0.1, 1)` }
         }
 
-        return <Transition
+        return refresh ? <Transition
                 in={!pullingUp}
                 timeout={0}
             >
@@ -270,7 +275,7 @@ export default class PullToRefresh extends Component {
                         />}
                 </div>}
             
-            </Transition>
+            </Transition> : null
     }
 
     renderFooter() {

@@ -62,6 +62,7 @@ export default class PullToRefershDemo extends Component {
             data
         } = this.state
         return  <PullToRefresh
+                    refresh={false}
                     refreshing={refreshing}
                     loading={loading}
                     hasMore={hasMore}
