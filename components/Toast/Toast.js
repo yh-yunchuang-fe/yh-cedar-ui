@@ -18,6 +18,7 @@ export default class Toast extends Component {
         onClose: () => {},
         position: 'center',
         mask: false,
+        zIndex: 1000
     };
 
     static propTypes = {
@@ -28,6 +29,7 @@ export default class Toast extends Component {
         position: PropTypes.oneOf(['top', 'center', 'bottom']),
         className: PropTypes.string,
         mask: PropTypes.bool,
+        zIndex: PropTypes.number
     };
 
     ownIcon = false;
@@ -150,6 +152,7 @@ export default class Toast extends Component {
             mask,
             position,
             className,
+            zIndex,
             ...restProps
         } = this.props;
         let innerCls = null;
@@ -168,7 +171,7 @@ export default class Toast extends Component {
             mask ? 'yh-toast-mask' : null,
         );
         return (
-            <div className={cls}>
+            <div className={cls} style={{zIndex}}>
                 <Animation
                     key="toast"
                     component="div"

@@ -16,6 +16,7 @@ const show = (content, options = {}) => {
         position,
         onClose,
         style,
+        zIndex
     } = options;
     const div = document.createElement('div');
     document.getElementById('modal-root').appendChild(div);
@@ -33,6 +34,7 @@ const show = (content, options = {}) => {
             position={position}
             onClose={onClose}
             animationEnd={animationEnd}
+            zIndex={zIndex}
         />
     , div);
     return div;
@@ -48,6 +50,7 @@ export default {
             onClose,
             style,
             mask,
+            zIndex
         } = options;
         return show(content, {
             type: 'success',
@@ -56,6 +59,7 @@ export default {
             onClose,
             style,
             mask,
+            zIndex
         });
     },
     fail(content, options = {}) {
@@ -65,6 +69,7 @@ export default {
             onClose,
             style,
             mask,
+            zIndex
         } = options;
         return show(content, {
             type: 'fail',
@@ -73,6 +78,7 @@ export default {
             onClose,
             style,
             mask,
+            zIndex
         });
     },
     warn(content, options = {}) {
@@ -82,6 +88,7 @@ export default {
             onClose,
             style,
             mask,
+            zIndex
         } = options;
         return show(content, {
             type: 'warn',
@@ -90,6 +97,7 @@ export default {
             onClose,
             style,
             mask,
+            zIndex
         });
     },
     loading(content, options = {}) {
@@ -99,6 +107,7 @@ export default {
             onClose,
             style,
             mask,
+            zIndex
         } = options;
         return show(content, {
             type: 'loading',
@@ -107,6 +116,7 @@ export default {
             onClose,
             style,
             mask,
+            zIndex
         });
     },
     hide(div) {
