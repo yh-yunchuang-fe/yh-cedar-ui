@@ -2,10 +2,12 @@
  * Created by beilunyang on 2018/9/3
  */
 import React from 'react';
+import blueLoading from'./loading-blue.png'
+import whiteLoading from './loading-white.png'
 
 const imgMap = {
-    'loading-blue': require('./loading-blue.png'),
-    'loading-white': require('./loading-white.png'),
+    'loading-blue': blueLoading,
+    'loading-white': whiteLoading,
 };
 
 const Image = ({ name, ...restProps }) => {
