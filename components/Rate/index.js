@@ -1,5 +1,7 @@
 import React, {PureComponent} from 'react'
 import './index.less'
+import activeStar from './imgs/star-active@2x.png'
+import star from './imgs/star@2x.png'
 
 export default class Rate extends PureComponent {
     constructor(props) {
@@ -78,7 +80,7 @@ export default class Rate extends PureComponent {
                     <a className="rate-tag" onClick={this.changeState.bind(this, index, rate.key)}>
                         <img 
                             className="rate-img" 
-                            src={rate.selected ? require("./imgs/star-active@2x.png") : require("./imgs/star@2x.png")} 
+                            src={rate.selected ? activeStar : star} 
                         />
                     </a>
                 </li>
